@@ -4,7 +4,5 @@
  WORKDIR /code
  ADD requirements.txt /code/
  RUN pip install -r requirements.txt
- RUN python manage.py migrate
- RUN python manage.py createsuperuser
  ADD . /code/
  
