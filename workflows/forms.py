@@ -7,5 +7,4 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = "__all__"
-        field = ['username', 'email', 'password']
+        fields = ['username', 'email', 'password']

@@ -1,0 +1,63 @@
+{% extends 'workflows/base.html' %}
+{% block title %}Welcome {{ user.username }}! {% endblock %}
+{% block body %}
+
+    {% load staticfiles %}
+   <!--
+   <div class="intro-header">
+		<div class="col-xs-12 text-center abcen1">
+			<h1 class="h1_home wow fadeIn" data-wow-delay="0.4s">Welcome {{ user.username }}!</h1>
+			<h3 class="h3_home wow fadeIn" data-wow-delay="0.6s">We hope you enjoy using our tools</h3>
+		</div>
+
+		<div class="col-xs-12 text-center abcen wow fadeIn">
+			<div class="button_down ">
+				<a class="imgcircle wow bounceInUp" data-wow-duration="1.5s"  href="#whatis"> <img class="img_scroll" src="{% static 'img/icon/circle.png' %}" alt=""> </a>
+			</div>
+		</div>
+    </div>   -->
+
+     <style type="text/css">
+    html, body, #canvas {
+      height: 100%;
+      padding: 0;
+    }
+
+    #save-button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+
+      border: solid 5px green;
+    }
+
+      #download-button {
+          position: absolute;
+          top: 50px;
+          right: 20px;
+
+          border: solid 5px blue;
+      }
+  </style>
+
+
+  <link rel="stylesheet" href=" {% static 'workflows/bower_components/bpmn-js/dist/assets/diagram-js.css' %} ">
+  <link rel="stylesheet" href=" {% static 'workflows/bower_components/bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css' %} ">
+
+
+    <a href="https://github.com/eligrey/FileSaver.js/blob/master/FileSaver.js" target="_blank"></a>
+  <!-- element to draw bpmn diagram in -->
+  <div id="canvas"></div>
+
+  <button id="save-button">Save Diagram</button>
+  <button id="download-button" type="submit" class="btn btn-primary">Download XML</button>
+
+  <!-- scripts -->
+
+  <!-- bpmn-js modeler -->
+  <script src=" {% static 'workflows/bower_components/bpmn-js/dist/bpmn-modeler.js' %} "></script>
+
+  <!-- application -->
+  <script src=" {% static 'workflows/modeler.js' %} "></script>
+
+{% endblock %}
