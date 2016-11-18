@@ -95,8 +95,8 @@ DATABASES = {
          'ENGINE': 'django.db.backends.postgresql_psycopg2',
          'NAME': 'postgres',
          'USER': 'postgres',
-         'HOST': 'db',
-         #'HOST': os.getenv("DB_1_PORT_5432_TCP_ADDR"),
+         #'HOST': 'db',
+         'HOST': os.getenv("DB_1_PORT_5432_TCP_ADDR"),
          'PORT': 5432,
      }
  }
