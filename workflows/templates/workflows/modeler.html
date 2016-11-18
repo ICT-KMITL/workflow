@@ -1,18 +1,16 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+{% extends 'workflows/base.html' %}
+{% block title %}Welcome {{ user.username }}! {% endblock %}
+{% block body %}
 
-  <title>bpmn-js seed</title>
 
-  <style type="text/css">
+    {% load staticfiles %}
 
+
+
+     <style type="text/css">
     html, body, #canvas {
       height: 100%;
       padding: 0;
-         padding-top: 65px;
     }
 
     #save-button {
@@ -22,12 +20,12 @@
 
       border: solid 5px green;
     }
-    
+
       #download-button {
           position: absolute;
           top: 50px;
           right: 20px;
-          
+
           border: solid 5px blue;
       }
 
@@ -36,20 +34,19 @@
      position: fixed;
     top: 0px;
     overflow-y: hidden !important;
-}
+    }
 
          body{
             padding-top: 65px;
         }
-
   </style>
-    
-    
+
+
   <link rel="stylesheet" href=" {% static 'workflows/bower_components/bpmn-js/dist/assets/diagram-js.css' %} ">
   <link rel="stylesheet" href=" {% static 'workflows/bower_components/bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css' %} ">
-</head>
-<body>
-    <a href="https://github.com/eligrey/FileSaver.js/blob/master/FileSaver.js" target="_blank"></a> 
+
+
+    <a href="https://github.com/eligrey/FileSaver.js/blob/master/FileSaver.js" target="_blank"></a>
   <!-- element to draw bpmn diagram in -->
   <div id="canvas"></div>
 
@@ -63,5 +60,5 @@
 
   <!-- application -->
   <script src=" {% static 'workflows/modeler.js' %} "></script>
-</body>
-</html>
+
+{% endblock %}

@@ -6,6 +6,16 @@ from django.db.models import Q
 
 from .forms import UserForm
 
+def profileEdit(request):
+    return render(request, 'workflows/profile-edit.html')
+
+def create(request):
+    return render(request, "workflows/create.html")
+
+
+def modeler(request):
+    return render(request, "workflows/modeler.html")
+
 
 def index(request):
     if not request.user.is_authenticated():
@@ -22,6 +32,7 @@ def logout_user(request):
     }
     return render(request, 'workflows/login.html', context)
 
+
 def login_user(request):
     if request.method == "POST":
         username = request.POST['username']
@@ -36,6 +47,7 @@ def login_user(request):
         else:
             return render(request, 'workflows/login.html', {'error_message': 'Invalid login'})
     return render(request, 'workflows/login.html')
+
 
 def register(request):
     form = UserForm(request.POST or None)
