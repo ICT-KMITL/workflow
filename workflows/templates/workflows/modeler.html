@@ -1,5 +1,5 @@
 {% extends 'workflows/base.html' %}
-{% block title %}Welcome {{ user.username }}! {% endblock %}
+{% block title %} Welcome {{ user.username }}! {% endblock %}
 {% block body %}
 
 
@@ -15,26 +15,21 @@
 
     #save-button {
       position: absolute;
-      top: 20px;
-      right: 20px;
+      bottom: 50px;
+      left: 20px;
 
       border: solid 5px green;
     }
 
       #download-button {
           position: absolute;
-          top: 50px;
-          right: 20px;
+          bottom: 20px;
+          left: 20px;
 
           border: solid 5px blue;
       }
 
-    navbar-default
-    {
-     position: fixed;
-    top: 0px;
-    overflow-y: hidden !important;
-    }
+
 
          body{
             padding-top: 65px;
@@ -50,7 +45,7 @@
   <!-- element to draw bpmn diagram in -->
   <div id="canvas"></div>
 
-  <button id="save-button">Save Diagram</button>
+  <button id="save-button"></button>
   <button id="download-button" type="submit" class="btn btn-primary">Download XML</button>
 
   <!-- scripts -->
