@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^create/$', views.create, name='create'),
     url(r'^modeler/$', views.modeler, name='modeler'),
     url(r'^create/modeler/$', views.saveXML, name='saveXML'),
+    url(r'^(?P<workflow_id>[0-9]+)/modeler/$', views.saveEditedXML, name='saveEditedXML'),
     url(r'^profileedit/$', views.profileEdit, name = 'profileedit'),
     url(r'^register_user/$', views.register_user, name='register_user'),
     url(r'^view_profile/$', views.view_profile, name='view_profile'),
@@ -21,6 +22,9 @@ urlpatterns = [
     url(r'^announce/$', views.announce, name='announce'),
     url(r'^funding/$', views.funding, name='funding'),
     url(r'^(?P<workflow_id>[0-9]+)/$', views.editingWorkflow, name='editWorkflow'),
+    url(r'^login_user_google/$', views.login_user_google, name='login_user_google'),
+    url(r'^design_form/$', views.design_form, name='design_form'),
+    url(r'^openXML/$', views.openXML, name='openXML'),
 
 ]
 

@@ -1,0 +1,5 @@
+{
+	"key": "831324499173-p34p2cfagu603jtq1foss5non7nf3ouf.apps.googleusercontent.com",
+	"secret": "ZSjA9B-Ec7LvoD2oUcaTE_FE"
+
+}

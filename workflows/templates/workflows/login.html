@@ -13,7 +13,6 @@
 			<form role="form" action="{% url 'workflows:login_user'%}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
 
-
 				<div class="col-md-6" style = "left:27%">
 					<div class="form-group">
 						<label for="InputName">Name</label>
@@ -21,7 +20,7 @@
 							<input type="text" class="form-control" name="username" id="InputName" placeholder="Enter Name" required>
 							<span class="input-group-addon"><i class="glyphicon glyphicon-ok form-control-feedback"></i></span>
 						</div>
-					</div>
+                    </div>
 
 
 					<div class="form-group">
@@ -32,22 +31,38 @@
 						</div>
 					</div>
 
+                    <div class="panel-footer">
+                        Don't have an account? <a href="{% url 'workflows:register' %}"> <br>Click hereeee</a> to register.
+                    </div>
 
+
+<<<<<<< HEAD
+=======
                  <div class="panel-footer">
                     Don't have an account? <a href="{% url 'workflows:register' %}"> <font color="red"><br>Click here </font></a> to register.
                 </div>
+>>>>>>> origin/master
 
 
-					<input type="submit" name="submit" id="submit" value="Submit" class="btn wow tada btn-embossed btn-primary pull-right">
+
+                    <input type="submit" name="submit" id="submit" value="Submit" class="btn wow tada btn-embossed btn-primary pull-right">
+
 				</div>
+
+
+
 			</form>
 
+
+<!--
+
+
+-->
 
 
 			</div>
 		</div>
 	</div>
-
 
 
 

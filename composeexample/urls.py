@@ -7,6 +7,10 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^workflows/', include('workflows.urls')),
     url(r'^', include('workflows.urls')),
+    #url('', include('social.apps.django_app.urls', namespace='social')),
+    #url('', include('social.apps.django_app.urls', namespace='social')),
+    #url('', include('django.contrib.auth.urls', namespace='auth')),
+
 ]
 
 if settings.DEBUG:

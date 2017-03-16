@@ -45,7 +45,7 @@ button {
     display: inline-block;
     font-size: 16px;
     position:relative;
-    left: 45%;
+    left: 37%;
 }
 img{
    padding: 5px;
@@ -61,6 +61,44 @@ p{
     line-height:50px;
 }
 
+
+.btn-tertiary {
+  color: #555;
+  padding: 0;
+  line-height: 40px;
+  width: 300px;
+  margin: auto;
+  display: block;
+  border: 2px solid #555;
+}
+.btn-tertiary:hover, .btn-tertiary:focus {
+  color: #888888;
+  border-color: #888888;
+}
+
+/* input file style */
+.input-file {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+.input-file + .js-labelFile {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0 10px;
+  cursor: pointer;
+}
+.input-file + .js-labelFile .icon:before {
+  content: "\f093";
+}
+.input-file + .js-labelFile.has-file .icon:before {
+  content: "\f00c";
+  color: #5AAC7B;
+}
 
 
 </style>
@@ -87,13 +125,38 @@ p{
       </tr>
     </table>
 
-    <div class = "button">
-          <button>SHOW MORE</button>
-    </div>
 
-                </div>
-        </div>
+            <!--
+    <div class = "button">
+
+
+
+          <form role = "form" action="{% url 'workflows:openXML'%}" method="post" enctype="multipart/form-data" id = "form1">
+              {% csrf_token %}
+                <button>OPEN XMl</button>
+          </form>
+
+    </div>
+        -->
+
+
+
+
+
+
+<div class="form-group">
+    <form role = "form" action="{% url 'workflows:openXML'%}" method="post" enctype="multipart/form-data" id = "form1">
+              {% csrf_token %}
+            <input type="file" name="file" id="file" class="input-file">
+
+                <label for="file" class="btn btn-tertiary js-labelFile">
+                     <i class="icon fa fa-check"></i>
+                     <span class="js-fileName">Choose a file</span>
+                </label>
+    </form>
 </div>
+
+
 
 <div class="content-section-b">
 
@@ -106,6 +169,7 @@ p{
                         <tr>
 
                     {% for workflow in workflows %}
+
 
                         <td width = "150" height = "150" bgcolor = "#de445e" align="center"><a href="{% url 'workflows:editWorkflow' workflow.id %}"><img src="{% static 'img/file.png' %}"><h5>{{ workflow.name}}</h5></a></td>
 
@@ -137,4 +201,36 @@ p{
 
     <!-- CUSTOM SCRIPTS -->
     <script src="{%static 'assets/js/custom.js' %}"></script>
+
+            <script>
+                (function() {
+
+  'use strict';
+
+  $('.input-file').each(function() {
+    var $input = $(this),
+        $label = $input.next('.js-labelFile'),
+        labelVal = $label.html();
+
+   $input.on('change', function(element) {
+      var fileName = '';
+      if (element.target.value) fileName = element.target.value.split('\\').pop();
+      fileName ? $label.addClass('has-file').find('.js-fileName').html(fileName) : $label.removeClass('has-file').html(labelVal);
+   });
+  });
+
+})();
+
+                $(function(){
+                        $("#file").change(function(){
+                        $("#form1").submit();
+                    });
+                });
+
+
+
+
+
+            </script>
+
 {% endblock %}

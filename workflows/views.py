@@ -8,13 +8,45 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .forms import *
 
+
+
+from django.shortcuts import render
+import social.apps.django_app.default.models as sm
+from django.contrib.auth import authenticate, login, logout
+
+
+
+
+
+
 def editingWorkflow(request, workflow_id):
     if not request.user.is_authenticated():
         return render(request, 'workflows/login.html')
     else:
         user = request.user
         workflow = get_object_or_404(WorkflowTemplate, pk=workflow_id)
-        return render(request, 'workflows/modeler.html', {'editingWorkflow': workflow, 'user': user})
+        xml = workflow.xml
+        xml = xml.replace("\r", "").replace("\n", "").replace("\"", "\\\"")
+
+        request.session['workflowId'] = workflow.id
+        return render(request, 'workflows/modeler.html', {'editingWorkflow': workflow, 'xml': xml, 'user': user})
+
+
+
+def openXML(request,):
+    if not request.user.is_authenticated():
+        return render(request, 'workflows/login.html')
+    else:
+
+        xml = request.FILES['file'].read().decode("utf-8")
+        print(type(xml), xml)
+        xml = xml.replace("\r", "").replace("\n", "").replace("\"", "\\\"")
+
+        #request.session['workflowId'] = workflow.id
+        return render(request, 'workflows/modeler.html', {'xml': xml})
+
+
+
 
 def job(request):
    return render(request, "workflows/job.html")
@@ -62,6 +94,17 @@ def saveXML(request):
             workflows = WorkflowTemplate.objects.filter(creator=user)
             return render(request, 'workflows/index.html', {'workflows': workflows})
 
+@csrf_exempt
+def saveEditedXML(request, workflow_id):
+
+    if request.is_ajax():
+        if request.method == 'POST':
+            workflow = WorkflowTemplate.objects.get(id=workflow_id)
+            workflow.xml = request.POST.get('userXml')
+            workflow.save()
+            user = request.user
+            workflows = WorkflowTemplate.objects.filter(creator=user)
+            return render(request, 'workflows/index.html', {'workflows': workflows})
 
 
 def modeler(request):
@@ -86,6 +129,7 @@ def logout_user(request):
     }
     return render(request, 'workflows/login.html', context)
 
+
 @csrf_exempt
 def login_user(request):
     if request.method == "POST":
@@ -106,25 +150,53 @@ def login_user(request):
     return render(request, 'workflows/login.html')
 
 
-def register(request):
-    form = UserForm(request.POST or None)
 
-    print("helooooooo")
-    if form.is_valid():
-        user = form.save(commit=False)
-        username = form.cleaned_data['username']
-        password = form.cleaned_data['password']
-        user.set_password(password)
-        user.save()
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            if user.is_active:
-                login(request, user)
-                return render(request, 'workflows/index.html')
-    context = {
-        "form": form,
-    }
-    return render(request, 'workflows/register.html', context)
+
+
+
+def login_user_google(request):
+    uname = ""
+    if request.method == 'POST' and 'submit' in request.POST:
+        submit = request.POST['submit']
+        if submit == "sign-out":
+            logout(request)
+    if '_auth_user_id' in request.session:
+        uname = sm.UserSocialAuth.objects.get(
+            user_id=int(request.session['_auth_user_id'])
+        ).user
+    return render(request, 'workflows/index.html', {'uname': uname})
+
+
+
+
+
+
+def register(request):
+
+    if not request.user.is_authenticated():
+        form = UserForm(request.POST or None)
+        if form.is_valid():
+            user = form.save(commit=False)
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user.set_password(password)
+            user.save()
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return render(request, 'workflows/index.html')
+        context = {
+            "form": form,
+        }
+        return render(request, 'workflows/register.html', context)
+    else:
+        user = request.user
+        workflows = WorkflowTemplate.objects.filter(creator=user)
+        return render(request, 'workflows/index.html', {'workflows': workflows})
+
+
+
 
 
 #User edit profile
@@ -162,7 +234,7 @@ def profileDetail(request):
 
         print(student)
 
-        return render(request, 'workflows/view_Profile.html', {'student': student})
+        return render(request, 'workflows/view_profile.html', {'student': student})
 
 
 def job(request):
@@ -173,7 +245,32 @@ def announce(request):
 
 def funding(request):
     return render(request, "workflows/funding.html")
+
+
+def design_form(request):
+    return render(request, "workflows/designform.html")
+
+
+
+
+
 '''
+def verify(request):
+    # Google will direct with state and code in the URL
+    # ?state=zNHRjuYO...&code=4/zK5F93g2we...
+
+    # ensure we have a session state and the state value is the same as what google returned
+    if 'google_state' not in request.session \
+            or 'state' not in request.GET \
+            or 'code' not in request.GET \
+            or request.session['google_state'] != request.GET['state']:
+        return False
+    else:
+        return True
+
+
+
+
 
 def profileDetail(request, user):
     if not request.user.is_authenticated():
