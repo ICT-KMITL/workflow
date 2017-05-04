@@ -18,9 +18,7 @@ class Node(models.Model):
     title = models.CharField(max_length=100)
     arc = Arc()
 
-
 """
-
 
 class StudentModel(models.Model):
 
@@ -80,4 +78,42 @@ class WorkflowTemplate(models.Model):
     status = models.CharField(max_length=100,default="Unpublished")
     #start = models.ForeignKey(StartEvent)
     creator = models.ForeignKey(User,default=1)
+
+
+
+class PendingTask(models.Model):
+    taskId = models.AutoField(primary_key=True)
+    assignToUser = models.TextField(max_length=50)
+    form = models.TextField(max_length=400)
+    listenner = models.ForeignKey(User)
+    #belongToWfId = models.ForeignKey()
+    taskName = models.TextField(max_length=100)
+    #CurrentFlowId = models.ForeignKey()
+    State = models.BooleanField(default=True)
+
+class Channel(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.TextField(max_length=200)
+
+
+class ChannelJoin(models.Model):
+    id = models.AutoField(primary_key=True)
+    userId = models.ForeignKey(User,default=1)
+    channelId = models.ForeignKey(Channel,default=1)
+
+class Message(models.Model):
+    id = models.AutoField(primary_key=True)
+    msg = models.TextField(max_length=200)
+    sender = models.ForeignKey(User, related_name = "sender", default=1)
+    receiver = models.ForeignKey(User, related_name = "receiver", default=1)
+    timestamp = models.TimeField(auto_now=False, auto_now_add=False)
+    room = models.ForeignKey(Channel ,default='')
+
+class ExecutingFlow(models.Model):
+    id = models.AutoField(primary_key=True)
+    status = models.BooleanField(default=True)
+
+
+
+
 

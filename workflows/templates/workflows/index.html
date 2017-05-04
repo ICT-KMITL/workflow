@@ -14,223 +14,229 @@
     <!--REQUIRED STYLE SHEETS-->
     <!-- BOOTSTRAP CORE STYLE CSS -->
 
-       <!-- CUSTOM STYLE CSS -->
+    <!-- CUSTOM STYLE CSS -->
 
     <!-- GOOGLE FONT -->
 
     <link href="http://fonts.googleapis.com/css?family=Montserrat" rel='stylesheet' type='text/css'>
 
+
     <!-- ICON -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
 
 
-<style>
+    <style>
 
-table{
-    margin-left: 130px;
-    float: left;
-    padding: 15px;
-}
-  td {
-      border: 10px solid white;
-  }
-button {
-    margin-top: 20px;
-    margin-bottom: 30px;
-    background-color: #4CAF50; /* Green */
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    display: inline-block;
-    font-size: 16px;
-    position:relative;
-    left: 37%;
-}
-img{
-   padding: 5px;
-}
-h2 {
-    margin-top: 60px;
-    margin-left: 150px;
-    line-height:50px;
-}
-p{
-    padding-left: 150px;
-    font-size: 30px;
-    line-height:50px;
-}
+        table {
+            margin-left: 130px;
+            float: left;
+            padding: 15px;
+        }
 
+        td {
+            border: 10px solid white;
+        }
 
-.btn-tertiary {
-  color: #555;
-  padding: 0;
-  line-height: 40px;
-  width: 300px;
-  margin: auto;
-  display: block;
-  border: 2px solid #555;
-}
-.btn-tertiary:hover, .btn-tertiary:focus {
-  color: #888888;
-  border-color: #888888;
-}
+        button {
+            margin-top: 20px;
+            margin-bottom: 30px;
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            display: inline-block;
+            font-size: 16px;
+            position: relative;
+            left: 37%;
+        }
 
-/* input file style */
-.input-file {
-  width: 0.1px;
-  height: 0.1px;
-  opacity: 0;
-  overflow: hidden;
-  position: absolute;
-  z-index: -1;
-}
-.input-file + .js-labelFile {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  padding: 0 10px;
-  cursor: pointer;
-}
-.input-file + .js-labelFile .icon:before {
-  content: "\f093";
-}
-.input-file + .js-labelFile.has-file .icon:before {
-  content: "\f00c";
-  color: #5AAC7B;
-}
+        img {
+            padding: 5px;
+        }
 
+        h2 {
+            margin-top: 60px;
+            margin-left: 150px;
+            line-height: 50px;
+        }
 
-</style>
+        p {
+            padding-left: 150px;
+            font-size: 30px;
+            line-height: 50px;
+        }
 
+        .btn-tertiary {
+            color: #555;
+            padding: 0;
+            line-height: 40px;
+            width: 300px;
+            margin: auto;
+            display: block;
+            border: 2px solid #555;
+        }
 
-<div class="content-section-a">
+        .btn-tertiary:hover, .btn-tertiary:focus {
+            color: #888888;
+            border-color: #888888;
+        }
 
-        <div class="container">
-            <div class="row" style = "left:10%">
+        /* input file style */
+        .input-file {
+            padding-top: 50px;
+            width: 0.1px;
+            height: 0.1px;
+            opacity: 0;
+            overflow: hidden;
+            position: absolute;
+            z-index: -1;
+        }
 
+        .input-file + .js-labelFile {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding: 0 10px;
+            cursor: pointer;
+        }
 
-   <h4 class="section-heading">Most Popular Apps</h4>
+        .input-file + .js-labelFile .icon:before {
+            content: "\f093";
+        }
 
-    <table>
-      <tr>
-        <td width = "150" height = "150" bgcolor = "#93c47d" align="center"><a href="{% url 'workflows:job' %}"><img src=" {% static 'image/Employee.png' %}"><h5>Job Application</h5></a></td>
-        <td width = "150" height = "150" bgcolor = "#78909c" align="center"><a href="#2"><img src=" {% static 'image/PalmTree.png' %}"><h5>Vacation Request</h5></a></td>
-        <td width = "150" height = "150" bgcolor = "#f7b600" align="center"><a href="#3"><img src=" {% static 'image/Cart.png' %}"><h5>Project Submitting</h5></a></td>
-        <td width = "150" height = "150" bgcolor = "#de445e" align="center"><a href="#4"><img src="{% static 'image/Trolley.png' %}"><h5>Business Meeting</h5></a></td>
-        <td width = "150" height = "150" bgcolor = "#0097a7" align="center"><a href="{% url 'workflows:announce' %}"><img src="{% static 'image/Receipt.png' %}"><h5>News Posting</h5></a></td>
-        <td width = "150" height = "150" bgcolor = "#93c47d" align="center"><a href="{% url 'workflows:funding' %}"><img src="{% static 'image/Bills.png' %}"><h5>Funding</h5></a></td>
-        <td width = "150" height = "150" bgcolor = "whitesmoke" align="center"><a href="{% url 'workflows:create' %}"><img src="{% static 'image/Plus.png' %}"><h5>Create your own App</h5></a></td>
+        .input-file + .js-labelFile.has-file .icon:before {
+            content: "\f00c";
+            color: #5AAC7B;
+        }
 
-      </tr>
-    </table>
+    </style>
 
 
-            <!--
-    <div class = "button">
-
-
-
-          <form role = "form" action="{% url 'workflows:openXML'%}" method="post" enctype="multipart/form-data" id = "form1">
-              {% csrf_token %}
-                <button>OPEN XMl</button>
-          </form>
-
-    </div>
-        -->
-
-
-
-
-
-
-<div class="form-group">
-    <form role = "form" action="{% url 'workflows:openXML'%}" method="post" enctype="multipart/form-data" id = "form1">
-              {% csrf_token %}
-            <input type="file" name="file" id="file" class="input-file">
-
-                <label for="file" class="btn btn-tertiary js-labelFile">
-                     <i class="icon fa fa-check"></i>
-                     <span class="js-fileName">Choose a file</span>
-                </label>
-    </form>
-</div>
-
-
-
-<div class="content-section-b">
+    <div class="content-section-a">
 
         <div class="container">
-            <div class="row">
-            <h4 class="section-heading">Your Workflow(s)</h4>
-
-                {% if workflows %}
-                    <table>
-                        <tr>
-
-                    {% for workflow in workflows %}
+            <div class="row" style="left:10%">
 
 
-                        <td width = "150" height = "150" bgcolor = "#de445e" align="center"><a href="{% url 'workflows:editWorkflow' workflow.id %}"><img src="{% static 'img/file.png' %}"><h5>{{ workflow.name}}</h5></a></td>
+                <h4 class="section-heading">Most Popular Apps</h4>
 
-                    {% endfor %}
-                        </tr>
+                <table>
+                    <tr>
+                        <td width="150" height="150" bgcolor="#93c47d" align="center"><a
+                                href="{% url 'workflows:job' %}"><img src=" {% static 'image/Employee.png' %}"><h5>Job
+                            Application</h5></a></td>
+                        <td width="150" height="150" bgcolor="#78909c" align="center"><a href="#2"><img
+                                src=" {% static 'image/PalmTree.png' %}"><h5>Vacation Request</h5></a></td>
+                        <td width="150" height="150" bgcolor="#f7b600" align="center"><a href="#3"><img
+                                src=" {% static 'image/Cart.png' %}"><h5>Project Submitting</h5></a></td>
+                        <td width="150" height="150" bgcolor="#de445e" align="center"><a href="#4"><img
+                                src="{% static 'image/Trolley.png' %}"><h5>Business Meeting</h5></a></td>
+                        <td width="150" height="150" bgcolor="#0097a7" align="center"><a
+                                href="{% url 'workflows:announce' %}"><img src="{% static 'image/Receipt.png' %}"><h5>
+                            News Posting</h5></a></td>
+                        <td width="150" height="150" bgcolor="#93c47d" align="center"><a
+                                href="{% url 'workflows:funding' %}"><img src="{% static 'image/Bills.png' %}"><h5>
+                            Funding</h5></a></td>
+                        <td width="150" height="150" bgcolor="whitesmoke" align="center"><a
+                                href="{% url 'workflows:create' %}"><img src="{% static 'image/Plus.png' %}"><h5>Create
+                            your own App</h5></a></td>
+                    </tr>
+                </table>
+                &nbsp; &nbsp;
 
-                    </table>
-                {% else %}
-                    <p class="lead">You have not created any workflow yet</p>
-                {% endif %}
+                <div class="form-group">
 
+                    <form role="form" action="{% url 'workflows:openXML' %}" method="post" enctype="multipart/form-data"
+                          id="form1">
+                        {% csrf_token %}
 
+                        <input type="file" name="file" id="file" class="input-file">
+
+                        <label for="file" class="btn btn-tertiary js-labelFile">
+                            <i class="icon fa fa-check"></i>
+                            <span class="js-fileName">Choose xml file</span>
+                        </label>
+                    </form>
                 </div>
-        </div>
-</div>
 
 
-        <!-- JavaScript -->
-    <script src="{% static 'js/jquery-1.10.2.js' %}"></script>
-    <script src="{% static 'js/bootstrap.js' %}"></script>
-	<script src="{% static 'js/owl.carousel.js' %}"></script>
-	<script src="{% static 'js/script.js' %}"></script>
+                <div class="content-section-b">
 
-    <!-- JAVASCRIPT FILES PLACED AT THE BOTTOM TO REDUCE THE LOADING TIME  -->
-    <!-- CORE JQUERY  -->
-    <script src="{% static 'assets/plugins/jquery-1.10.2.js' %}"></script>
-    <!-- BOOTSTRAP CORE SCRIPT   -->
-    <script src="{% static 'assets/plugins/bootstrap.js' %}"></script>
+                    <div class="container">
+                        <div class="row">
+                            <h4 class="section-heading">Your Workflow(s)</h4>
 
-    <!-- CUSTOM SCRIPTS -->
-    <script src="{%static 'assets/js/custom.js' %}"></script>
+                            {% if workflows %}
+                                <table>
+                                    <tr>
 
-            <script>
-                (function() {
+                                        {% for workflow in workflows %}
 
-  'use strict';
 
-  $('.input-file').each(function() {
-    var $input = $(this),
-        $label = $input.next('.js-labelFile'),
-        labelVal = $label.html();
+                                            <td width="150" height="150" align="center">
+                                                <a href="{% url 'workflows:editWorkflow' workflow.id %}">
+                                                    <img src="{% static 'image/xmlfile.png' %}">
+                                                    <h5>{{ workflow.name }}</h5>
+                                                </a>
 
-   $input.on('change', function(element) {
-      var fileName = '';
-      if (element.target.value) fileName = element.target.value.split('\\').pop();
-      fileName ? $label.addClass('has-file').find('.js-fileName').html(fileName) : $label.removeClass('has-file').html(labelVal);
-   });
-  });
+                                            </td>
 
-})();
+                                        {% endfor %}
+                                    </tr>
 
-                $(function(){
-                        $("#file").change(function(){
-                        $("#form1").submit();
+                                </table>
+                            {% else %}
+                                <p class="lead">You have not created any workflow yet</p>
+                            {% endif %}
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- JavaScript -->
+                <script src="{% static 'js/jquery-1.10.2.js' %}"></script>
+                <script src="{% static 'js/bootstrap.js' %}"></script>
+                <script src="{% static 'js/owl.carousel.js' %}"></script>
+                <script src="{% static 'js/script.js' %}"></script>
+
+                <!-- JAVASCRIPT FILES PLACED AT THE BOTTOM TO REDUCE THE LOADING TIME  -->
+                <!-- CORE JQUERY  -->
+                <script src="{% static 'assets/plugins/jquery-1.10.2.js' %}"></script>
+                <!-- BOOTSTRAP CORE SCRIPT   -->
+                <script src="{% static 'assets/plugins/bootstrap.js' %}"></script>
+
+                <!-- CUSTOM SCRIPTS -->
+                <script src="{% static 'assets/js/custom.js' %}"></script>
+
+                <script>
+                    (function () {
+
+                        'use strict';
+
+                        $('.input-file').each(function () {
+                            var $input = $(this),
+                                    $label = $input.next('.js-labelFile'),
+                                    labelVal = $label.html();
+
+                            $input.on('change', function (element) {
+                                var fileName = '';
+                                if (element.target.value) fileName = element.target.value.split('\\').pop();
+                                fileName ? $label.addClass('has-file').find('.js-fileName').html(fileName) : $label.removeClass('has-file').html(labelVal);
+                            });
+                        });
+
+                    })();
+
+                    $(function () {
+                        $("#file").change(function () {
+                            $("#form1").submit();
+                        });
                     });
-                });
 
 
-
-
-
-            </script>
+                </script>
 
 {% endblock %}

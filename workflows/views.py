@@ -26,6 +26,7 @@ def editingWorkflow(request, workflow_id):
         user = request.user
         workflow = get_object_or_404(WorkflowTemplate, pk=workflow_id)
         xml = workflow.xml
+        print(xml)
         xml = xml.replace("\r", "").replace("\n", "").replace("\"", "\\\"")
 
         request.session['workflowId'] = workflow.id
@@ -40,7 +41,7 @@ def openXML(request,):
 
         xml = request.FILES['file'].read().decode("utf-8")
         print(type(xml), xml)
-        xml = xml.replace("\r", "").replace("\n", "").replace("\"", "\\\"")
+        xml = xml.replace("\r", "\\r").replace("\n", "\\n").replace("\"", "\\\"").replace("\ufeff", "");
 
         #request.session['workflowId'] = workflow.id
         return render(request, 'workflows/modeler.html', {'xml': xml})
@@ -215,6 +216,9 @@ def register_user(request):
             student.profileLogo = request.FILES['profileLogo']
 
             student.save()
+
+
+
             return render(request, 'workflows/index.html', context)
 
         return render(request, 'workflows/profile-edit.html', context)
