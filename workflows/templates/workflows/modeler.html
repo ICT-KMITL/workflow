@@ -91,6 +91,13 @@
                 <div class="panel panel-default" style="height:100%;">
 
                     <div class="panel-heading">Property Panel</div>
+
+                    <p id="ElementID">test</p>
+
+
+                    <br>
+                    <br>
+                    <br>
                     <div class="panel-body" style="height:100%;">
                         <div class="row">
 
@@ -225,6 +232,27 @@
                         canvas.zoom('fit-viewport');
                     });
 
+                    var eventBus = bpmnModeler.get('eventBus');
+
+// you may hook into any of the following events
+var events = [
+
+  'element.click',
+
+];
+
+events.forEach(function(event) {
+
+  eventBus.on(event, function(e) {
+    // e.element = the model element
+    // e.gfx = the graphical element
+
+    document.getElementById("ElementID").innerHTML = "e.element.id";
+
+
+    console.log(event, 'on', e.element.id);
+  });
+});
 
                     // save diagram on button click
 
@@ -310,6 +338,25 @@
                         canvas.zoom('fit-viewport');
                     });
 
+                    var eventBus = bpmnModeler.get('eventBus');
+
+// you may hook into any of the following events
+var events = [
+
+  'element.click',
+
+];
+
+events.forEach(function(event) {
+
+  eventBus.on(event, function(e) {
+    // e.element = the model element
+    // e.gfx = the graphical element
+      document.getElementById("ElementID").innerHTML = "e.element.id";
+
+    console.log(event, 'on', e.element.id);
+  });
+});
 
                     // save diagram on button click
 
@@ -399,6 +446,25 @@
                         canvas.zoom('fit-viewport');
                     });
 
+                    var eventBus = bpmnModeler.get('eventBus');
+
+// you may hook into any of the following events
+var events = [
+
+  'element.click',
+
+];
+
+events.forEach(function(event) {
+
+  eventBus.on(event, function(e) {
+    // e.element = the model element
+    // e.gfx = the graphical element
+       $('.row-offcanvas').toggleClass('active');
+ document.getElementById("ElementID").innerHTML = e.element.id;
+    console.log(event, 'on', e.element.id);
+  });
+});
 
                     // save diagram on button click
 
