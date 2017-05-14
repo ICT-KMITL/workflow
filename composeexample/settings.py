@@ -31,7 +31,7 @@ DEBUG = True
 
 
 ALLOWED_HOSTS = ['www.itimemachine.net']
-ALLOWED_HOSTS = ['0.0.0.0','localhost']
+#ALLOWED_HOSTS = ['0.0.0.0','localhost']
 
 
 
