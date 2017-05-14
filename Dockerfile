@@ -4,5 +4,6 @@
  WORKDIR /code
  ADD requirements.txt /code/
  RUN pip install -r requirements.txt
+ RUN python manage.py migrate
  ADD . /code/
  

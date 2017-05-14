@@ -31,7 +31,7 @@ DEBUG = True
 
 
 #ALLOWED_HOSTS = ['www.itimemachine.net']
-ALLOWED_HOSTS = ['0.0.0.0','localhost','www.itimemachine.net', 'itimemachine.net']
+ALLOWED_HOSTS = ['0.0.0.0','localhost']
 
 
 
@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'social_django',
     'social.apps.django_app.default',
+    'channels',
+
 
 ]
 
@@ -120,8 +122,8 @@ DATABASES = {
          'ENGINE': 'django.db.backends.postgresql_psycopg2',
          'NAME': 'postgres',
          'USER': 'postgres',
-         #'HOST': 'db',
-         'HOST': os.getenv("DB_1_PORT_5432_TCP_ADDR"),
+         'HOST': 'db',
+         #'HOST': os.getenv("DB_1_PORT_5432_TCP_ADDR"),
          'PORT': 5432,
      }
  }
@@ -202,5 +204,9 @@ LOGIN_REDIRECT_URL = '/index'
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '831324499173-p34p2cfagu603jtq1foss5non7nf3ouf.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'ZSjA9B-Ec7LvoD2oUcaTE_FE'
 
-
-
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgiref.inmemory.ChannelLayer",
+        "ROUTING": "workflows.routing.channel_routing",
+    },
+}

@@ -5,7 +5,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 from .models import *
 from django.views.decorators.csrf import csrf_exempt
-
+import json
+from channels import Group
 from .forms import *
 
 
@@ -34,7 +35,7 @@ def editingWorkflow(request, workflow_id):
 
 
 
-def openXML(request,):
+def openXML(request):
     if not request.user.is_authenticated():
         return render(request, 'workflows/login.html')
     else:
@@ -66,6 +67,13 @@ def view_profile(request):
 
 def profileEdit(request):
     return render(request, 'workflows/profile-edit.html')
+
+def task_noti(request):
+    if not request.user.is_authenticated():
+        return render(request, 'workflows/login.html')
+    else:
+        user = request.user
+        return render(request, 'workflows/task_noti.html', {'user': user.username})
 
 def create(request):
     form = WorkflowTemplateForm(request.POST or None)
@@ -216,9 +224,6 @@ def register_user(request):
             student.profileLogo = request.FILES['profileLogo']
 
             student.save()
-
-
-
             return render(request, 'workflows/index.html', context)
 
         return render(request, 'workflows/profile-edit.html', context)

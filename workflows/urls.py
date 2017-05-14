@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^profileDetail/$', views.profileDetail, name='profileDetail'),
     url(r'^job/$', views.job, name='job'),
     url(r'^announce/$', views.announce, name='announce'),
+    url(r'^task_noti/$', views.task_noti, name='task_noti'),
     url(r'^funding/$', views.funding, name='funding'),
     url(r'^(?P<workflow_id>[0-9]+)/$', views.editingWorkflow, name='editWorkflow'),
     url(r'^login_user_google/$', views.login_user_google, name='login_user_google'),

@@ -1,4 +1,11 @@
 Django
+
 psycopg2
+
 rest-social-auth
+
 python-social-auth
+
+channels
+
+asgi_redis
