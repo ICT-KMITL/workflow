@@ -1,0 +1,197 @@
+{% extends 'workflows/base.html' %}
+{% block title %}Welcome {{ user.username }}! {% endblock %}
+{% block body %}
+    {% load staticfiles %}
+    <style xmlns="http://www.w3.org/1999/html">
+        body {
+            padding-top: 70px;
+        }
+
+        #body1 {
+            text-align: center;
+            background: #f9fcfe;
+            color: #38405e;
+            font-size: 16px;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 400;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
+        header {
+            width: 100%;
+            background: #38405e;
+            padding: 3em 0;
+            color: white;
+        }
+
+        header h1 {
+            font-weight: 300;
+            font-size: 36px;
+            margin: 0.75em 0;
+        }
+
+        header h1 span {
+            font-size: 90%;
+            color: #1bbbef;
+        }
+
+        main {
+            padding: 1.5em 0 0;
+        }
+
+
+
+
+
+    </style>
+    <div class="content-section-b">
+
+        <div class="container">
+            <div class="row">
+                <h4 class="section-heading"> Task: {{ task.taskName }}</h4>
+
+                <body id="body1" ng-app="app" ng-controller="main">
+
+                <main>
+
+                    <form id="msform" role="form" action="{% url 'workflows:do_task' task.taskId %}" method="post"
+                          enctype="multipart/form-data">
+                        <!-- progressbar -->
+
+                        <code id="markup"></code>
+                        <!-- fieldsets -->
+                        <fieldset>
+
+
+                            {% csrf_token %}
+                            {% if options %}
+
+                                <link rel='stylesheet prefetch'
+                                      href='http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/styles/default.min.css'
+                                      rel='stylesheet' type='text/css'>
+
+
+                                <script>
+                                    $(function () {
+                                        var escapeEl = document.createElement('textarea'),
+                                                code = document.getElementById('markup'),
+                                                escapeHTML = function (html) {
+                                                    escapeEl.textContent = html;
+                                                    return escapeEl.innerHTML;
+                                                },
+                                                formData = '{{ form | safe }}',
+                                                addLineBreaks = function (html) {
+                                                    return html.replace(new RegExp('&gt; &lt;', 'g'), '&gt;\n&lt;').replace(new RegExp('&gt;&lt;', 'g'), '&gt;\n&lt;');
+                                                };
+
+                                        //formData = formData.replace("\t", "");
+
+                                        // Grab markup and escape it
+                                        //var $markup = $('<div/>');
+                                        //$markup.formRender(formData);
+                                        console.log(JSON.stringify(formData));
+                                        $('#markup').formRender({formData: formData, dataType: 'json'});
+
+                                        // set < code > innerHTML with escaped markup
+                                        //code.innerHTML = addLineBreaks(escapeHTML($markup[0].innerHTML));
+
+                                        hljs.highlightBlock(code);
+                                    });</script>
+
+                                {% for option in options %}
+                                    <label class="radio-inline"><input type="radio" name="decisions"
+                                                                       value="{{ option }}">{{ option }}</label>
+                                {% endfor %}
+
+                            {% elif end %}
+                                {{ end }}
+                                Your workflow has reached the end of the process.
+
+                            {% else %}
+
+
+
+                                <link rel='stylesheet prefetch'
+                                      href='http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/styles/default.min.css'
+                                      rel='stylesheet' type='text/css'>
+
+
+                                <script>
+                                    $(function () {
+                                        var escapeEl = document.createElement('textarea'),
+                                                code = document.getElementById('markup'),
+                                                escapeHTML = function (html) {
+                                                    escapeEl.textContent = html;
+                                                    return escapeEl.innerHTML;
+                                                },
+                                                formData = '{{ form | safe }}',
+                                                addLineBreaks = function (html) {
+                                                    return html.replace(new RegExp('&gt; &lt;', 'g'), '&gt;\n&lt;').replace(new RegExp('&gt;&lt;', 'g'), '&gt;\n&lt;');
+                                                };
+
+                                        //formData = formData.replace("\t", "");
+
+                                        // Grab markup and escape it
+                                        //var $markup = $('<div/>');
+                                        //$markup.formRender(formData);
+                                        console.log(JSON.stringify(formData));
+                                        $('#markup').formRender({formData: formData, dataType: 'json'});
+
+                                        // set < code > innerHTML with escaped markup
+                                        //code.innerHTML = addLineBreaks(escapeHTML($markup[0].innerHTML));
+
+                                        hljs.highlightBlock(code);
+                                    });</script>
+
+
+
+
+
+
+                            {% endif %}
+
+
+
+                            <div class = "text-center" style="padding-top: 3%">
+                                <input type="submit" name="submit"  class="btn btn-primary btn-lg active" value="Submit"/>
+                            </div>
+
+
+                        </fieldset>
+
+                    </form>
+
+
+                    <script>
+                        var saveButton = document.querySelector('#saveAll');
+                        saveButton.addEventListener('click', function () {
+
+                            console.info('diagram saved');
+                            //console.info(xml);
+                            $.ajax({
+                                url: "modeler/",
+                                type: "POST",
+                                data: {userXml: window.xml}
+                            }).done(function (data) {
+                                location.href = "/workflows/";
+                            });
+
+
+                        });
+
+
+                    </script>
+
+
+                </main>
+                </body>
+            </div>
+        </div>
+    </div>
+
+    <script src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js'></script>
+    <!-- <script src=" {% static 'js/popup.js' %} "></script> -->
+
+{% endblock %}

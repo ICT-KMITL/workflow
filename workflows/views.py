@@ -9,15 +9,351 @@ import json
 from channels import Group
 from .forms import *
 
-
+from workflows.WorkflowEngine import *
+import xml.etree.ElementTree as ET
 
 from django.shortcuts import render
 import social.apps.django_app.default.models as sm
 from django.contrib.auth import authenticate, login, logout
+import json
+import ast
+
+def chat_room1(request):
+    if not request.user.is_authenticated():
+        return render(request, 'workflows/login.html')
+    else:
+        user = request.user
+        return render(request, 'workflows/chat_room1.html', {'user': user.username})
+
+def chat_room2(request):
+    if not request.user.is_authenticated():
+        return render(request, 'workflows/login.html')
+    else:
+        user = request.user
+        return render(request, 'workflows/chat_room2.html', {'user': user.username})
+
+def chat_room3(request):
+    if not request.user.is_authenticated():
+        return render(request, 'workflows/login.html')
+    else:
+        user = request.user
+        return render(request, 'workflows/chat_room3.html', {'user': user.username})
+
+def tasks(request):
+    if not request.user.is_authenticated():
+        return render(request, 'workflows/login.html')
+    else:
+        user = request.user
+        assignedTasks = PendingTask.objects.filter(assignToUser=user)
+        return render(request, 'workflows/tasks.html', {'assignedTasks': assignedTasks})
+
+def do_task(request,task_id):
+    if request.method == "POST": #Executing tasks
+
+        print(request.POST)
+        user = request.user
+        task = get_object_or_404(PendingTask,pk=task_id)
+        xml = task.belongToWFId.xml
+
+        root = ET.fromstring(xml)
+
+        parser = XMLParser(root)
+        parser.createCollaboration()
+        parser.createLaneset()
+        parser.createProcess()
+
+        nodes = parser.nodes
+        lanes = parser.lanes
+        flows = parser.flows
+        elems = parser.elems
+
+        workflow_engine = WorkflowExecution(flows[task.currentFlow],nodes,flows)
+        workflow_engine.run()
+
+
+        if workflow_engine.task == 1:
+            print("HLEFOEOFEF")
+
+
+
+            flow_id = workflow_engine.run().id
+            target_task = flows[flow_id].target
+            assignedUser = User.objects.get(username=nodes[target_task].lane.name)
+            task_name = nodes[target_task].name
+
+            form = workflow_engine.form
+            pending_task = PendingTask(assignToUser = assignedUser,form =form,listener = assignedUser,
+                            belongToWFId = task.belongToWFId ,taskName = task_name,currentFlow = flow_id, state = 1)
+            pending_task.save()
+
+            #newjson = {}
+
+            '''
+            for form_elem_key, form_elem_value in request.body.iteritems():
+                if form_elem_key != 'csrfmiddlewaretoken' and form_elem_key != 'submit':
+                    print("hello")
+            '''
+            global dict
+            print(xml)
+            input = dict(request.POST)
+            for i in range(len(root)):
+                print("OK-1")
+                if "process" in root[i].tag:
+                    print("OK-2")
+                    # noinspection PyPackageRequirements
+                    for child in root[i]:
+                        print("OK-3")
+                        print(child.get('id'))
+                        print("TASK ID: "+flows[flow_id].source)
+                        if child.get('id') == flows[flow_id].source:
+                            print("OK-4")
+                            for doc in child:
+                                print("OK-5")
+                                if "documentation" in doc.tag:
+                                    print(doc.text)
+                                    form = doc.text
+                                    form = form.replace("\n", "").replace("\r", "")
+                                    json_form = json.loads(form)
+                                    print(json_form)
+                                    print(len(json_form))
+                                    for j in json_form:
+                                        print(j)
+                                        if 'name' in j:
+                                            for key, value in input.items():
+                                                if j["name"] == key:
+                                                    j["value"] = value[0]
+
+
+                                                    doc.text = json.dumps(json_form)
+
+
+            print("JSON_FORM",json_form)
+            print(root)
+            print(ET.tostring(root))
+
+            '''
+
+            dict_json = {}
+            dict_json['action'] = "notification"
+            taskId = pending_task.taskId
+            lst = [task_name, nodes[target_task].lane.name, task.belongToWFId.executingDate.strftime("%B %d, %Y"), taskId]
+            dict_json['data'] = lst
+            data_noti = json.dumps(dict_json)
+            Group("User-" + assignedUser.username).send({"text": data_noti})
+
+
+            print(data_noti,assignedUser.username)
+            '''
+
+            executing_flow = task.belongToWFId
+            executing_flow.currentFlow = flow_id
+            executing_flow.xml = ET.tostring(root)
+            executing_flow.save()
+
+
+        elif workflow_engine.exclusive == 1:
+
+            option_list = workflow_engine.run()
+            '''
+            decisions = []
+            for option in option_list:
+                decisions.append(option.id)
+            '''
+
+            option_list = request.session['options_list']
+            decision = request.POST['decisions']
+
+            print(decision)
+            flow_id = option_list[decision]
+            print(flow_id)
+            target_task = flows[flow_id].target
+            assignedUser = User.objects.get(username=nodes[target_task].lane.name)
+            task_name = nodes[target_task].name
+
+            pending_task = PendingTask(assignToUser=assignedUser, form="", listener=assignedUser,
+                                       belongToWFId=task.belongToWFId, taskName=task_name, currentFlow=flow_id, state=1)
+            pending_task.save()
+
+
+            executing_flow = task.belongToWFId
+            executing_flow.currentFlow = flow_id
+            executing_flow.save()
+
+        elif workflow_engine.parallel == 1:
+            incom_flow_id_list =  workflow_engine.run()
+
+            #Joining parallel tasks
+            if workflow_engine.join == 1:
+                count = 0
+                for i in range(0,len(incom_flow_id_list)):
+                    if PendingTask.objects.filter(currentFlow = nodes[flows[incom_flow_id_list[i]].source].incoming).exists():
+                        count+=1
+                        print("OKOKOKOKOERGRTGTGJTROGJREPGWEGJREPG")
+
+                if count == 1:
+
+
+                    next_flow = workflow_engine.joinOutgoing
+                    target_task = flows[next_flow].target
+                    assignedUser = User.objects.get(username=nodes[target_task].lane.name)
+                    task_name = nodes[target_task].name
+
+                    pending_task = PendingTask(assignToUser=assignedUser, form="", listener=assignedUser,
+                                               belongToWFId=task.belongToWFId, taskName=task_name, currentFlow=next_flow,
+                                               state=1)
+                    pending_task.save()
+
+
+
+                    executing_flow = task.belongToWFId
+                    executing_flow.currentFlow = next_flow
+                    executing_flow.save()
+                else:
+                    task.delete()
+                    assignedTasks = PendingTask.objects.filter(assignToUser=user)
+                    return render(request, 'workflows/tasks.html', {'assignedTasks': assignedTasks})
+
+            #Splitting parallel tasks
+            else:
+                flow_id_list = workflow_engine.run()
+                for i in range(0,len(flow_id_list)):
+                    target_task = flows[flow_id_list[i]].target
+                    assignedUser = User.objects.get(username=nodes[target_task].lane.name)
+                    task_name = nodes[target_task].name
+                    pending_task = PendingTask(assignToUser=assignedUser, form="", listener=assignedUser,
+                                           belongToWFId=task.belongToWFId, taskName=task_name, currentFlow=flow_id_list[i], state=1)
+                    pending_task.save()
+
+
+        elif workflow_engine.endEvent == 1:
+            print("EFERGGRTHH")
+
+            executing_flow = task.belongToWFId
+            executing_flow.delete()
+
+
+        task.delete()
+        assignedTasks = PendingTask.objects.filter(assignToUser=user)
+
+
+        return render(request,'workflows/tasks.html',{'assignedTasks':assignedTasks})
+
+    else: #Showing task for user
+
+        if not request.user.is_authenticated():
+            return render(request, 'workflows/login.html')
+        else:
+
+            task = get_object_or_404(PendingTask, pk=task_id)
+            xml = task.belongToWFId.xml
+
+            root = ET.fromstring(xml)
+
+            parser = XMLParser(root)
+            parser.createCollaboration()
+            parser.createLaneset()
+            parser.createProcess()
+
+            nodes = parser.nodes
+            lanes = parser.lanes
+            flows = parser.flows
+            elems = parser.elems
+
+            workflow_engine = WorkflowExecution(flows[task.currentFlow], nodes, flows)
+            workflow_engine.run()
+            user = request.user
+
+            if workflow_engine.exclusive == 1:
+                option_list = workflow_engine.run()
+                print(option_list)
+
+                request.session['options_list'] = option_list
+
+                options = option_list.keys()
+
+                form = workflow_engine.form
+                print("------------------------------------FORM----------------------------------", form)
+                form = form.replace("\n", "").replace("\r", "")
+                print("------------------------------------FORM----------------------------------", form)
+
+                return render(request, 'workflows/do_task.html', {'task': task, 'user': user,'form':form,'options':options})
+
+            elif workflow_engine.endEvent == 1:
+                end_name = workflow_engine.run()
+                form = workflow_engine.form
+                form = form.replace("\n", "").replace("\r", "")
+
+                return render(request, 'workflows/do_task.html', {'task': task, 'user': user,'end':end_name,'form':form})
+
+
+            else:
+
+                user = request.user
+                pending_task = get_object_or_404(PendingTask, pk=task_id)
+
+                form = workflow_engine.form
+                form = form.replace("\n", "").replace("\r", "")
+                print("------------------------------------FORM----------------------------------",form)
 
 
 
 
+
+
+                request.session['taskId'] = pending_task.taskId
+                return render(request, 'workflows/do_task.html', {'task': pending_task, 'user': user,'form':form})
+
+
+
+def publish(request):
+    checkedList = request.POST.getlist('publishChecked')
+    user = request.user
+
+    for i in range(0,len(checkedList)):
+
+        workflow_id = int(checkedList[i])
+        workflow = get_object_or_404(WorkflowTemplate, pk=workflow_id)
+        xml = workflow.xml
+        #xml_file = open("file", "w").write(xml)
+        root = ET.fromstring(xml)
+
+        print(root.tag)
+        parser = XMLParser(root)
+        parser.createCollaboration()
+        parser.createLaneset()
+        parser.createProcess()
+
+        nodes = parser.nodes
+        lanes = parser.lanes
+        flows = parser.flows
+        elems = parser.elems
+
+        for node in nodes:
+            if isinstance(nodes[node],StartEvent):
+
+                print("StartFlow " + nodes[node].outgoing)
+                startCurrentFlow = flows[nodes[node].outgoing]
+        target_task = nodes[startCurrentFlow.target]
+        flow_id = startCurrentFlow.id
+        executing_flow = ExecutingFlow(status = 1,templateId = workflow,executor = user,currentFlow = flow_id,xml = xml)
+        executing_flow.save()
+
+
+        assignedUser = User.objects.get(username=target_task.lane.name)
+        task_name = target_task.name
+
+
+
+        tasks = PendingTask(assignToUser = assignedUser,form ="",listener = assignedUser,
+                            belongToWFId = executing_flow ,taskName = task_name,currentFlow = flow_id, state = 1)
+
+        tasks.save()
+
+
+    assignedTasks = PendingTask.objects.filter(assignToUser=user)
+
+
+    return render(request,'workflows/tasks.html',{'assignedTasks':assignedTasks})
 
 
 def editingWorkflow(request, workflow_id):
@@ -44,9 +380,27 @@ def openXML(request):
         print(type(xml), xml)
         xml = xml.replace("\r", "\\r").replace("\n", "\\n").replace("\"", "\\\"").replace("\ufeff", "");
 
-        #request.session['workflowId'] = workflow.id
+        request.session['XMLlocal'] = xml
+        return render(request, 'workflows/create_XML.html', {'xml': xml})
+
+def create_XML(request):
+    form = WorkflowTemplateForm(request.POST or None)
+
+    if form.is_valid():
+        workflow = form.save(commit=False)
+        workflow.creator = request.user
+        workflow.save()
+        request.session['workflowId'] = workflow.id
+
+        xml = request.session['XMLlocal']
         return render(request, 'workflows/modeler.html', {'xml': xml})
 
+
+    else:
+        context = {
+            "form": form,
+        }
+        return render(request, 'workflows/create_XML.html', context)
 
 
 
@@ -75,7 +429,27 @@ def task_noti(request):
         user = request.user
         return render(request, 'workflows/task_noti.html', {'user': user.username})
 
+def track(request):
+    if not request.user.is_authenticated():
+        return render(request, 'workflows/login.html')
+    else:
+        user = request.user
+        executingFlows = ExecutingFlow.objects.filter(executor=user)
+        return render(request, 'workflows/track.html', {'executingFlows': executingFlows})
+
+def track_modeler(request):
+    if not request.user.is_authenticated():
+        return render(request, 'workflows/login.html')
+    else:
+        user = request.user
+        return render(request, 'workflows/track_modeler.html', {'user': user})
+
+
+
 def create(request):
+
+    print(request.POST)
+
     form = WorkflowTemplateForm(request.POST or None)
 
     if form.is_valid():
@@ -90,6 +464,59 @@ def create(request):
             "form": form,
         }
         return render(request, 'workflows/create.html', context)
+
+def create_job(request):
+    form = WorkflowTemplateForm(request.POST or None)
+
+    if form.is_valid():
+        workflow = form.save(commit=False)
+        workflow.creator = request.user
+        workflow.save()
+
+        request.session['workflowId'] = workflow.id
+        return render(request, 'workflows/job.html')
+
+    else:
+        context = {
+            "form": form,
+        }
+        return render(request, 'workflows/create_job.html', context)
+
+def create_funding(request):
+    form = WorkflowTemplateForm(request.POST or None)
+
+    if form.is_valid():
+        workflow = form.save(commit=False)
+        workflow.creator = request.user
+        workflow.save()
+        request.session['workflowId'] = workflow.id
+        return render(request, 'workflows/funding.html')
+
+    else:
+        context = {
+            "form": form,
+        }
+        return render(request, 'workflows/create_funding.html', context)
+
+
+
+def create_news(request):
+    form = WorkflowTemplateForm(request.POST or None)
+
+    if form.is_valid():
+        workflow = form.save(commit=False)
+        workflow.creator = request.user
+        workflow.save()
+        request.session['workflowId'] = workflow.id
+        return render(request, 'workflows/announce.html')
+
+    else:
+        context = {
+            "form": form,
+        }
+        return render(request, 'workflows/create_news.html', context)
+
+
 
 @csrf_exempt
 def saveXML(request):

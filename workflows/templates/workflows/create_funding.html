@@ -1,0 +1,84 @@
+{% extends 'workflows/base.html' %}
+{% block title %}Welcome {{ user.username }}! {% endblock %}
+{% block body %}
+    {% load staticfiles %}
+
+<!--<![endif]-->
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!--[if IE]>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <![endif]-->
+    <title>Creat task</title>
+    <!--REQUIRED STYLE SHEETS-->
+    <!-- BOOTSTRAP CORE STYLE CSS -->
+    <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
+    <!-- FONTAWESOME STYLE CSS -->
+    <link href="{% static 'assets/css/font-awesome.min.css' %}" rel="stylesheet" />
+    <!--ANIMATED FONTAWESOME STYLE CSS -->
+    <link href="{% static 'assets/css/font-awesome-animation.css' %}" rel="stylesheet" />
+       <!-- CUSTOM STYLE CSS -->
+
+    <link href="{% static 'assets/css/create.css' %}" rel="stylesheet" />
+
+    <!-- GOOGLE FONT -->
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel='stylesheet' type='text/css'>
+    <!-- ICON -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+    <script type="{% static 'assets/js/create.js' %}"></script>
+
+
+<style>
+  td{
+    border: 10px solid white;
+  }
+</style>
+
+<body >
+
+
+
+<form id="msform" role="form" action="{% url 'workflows:create_funding'%}" method="post" enctype="multipart/form-data">
+  <!-- progressbar -->
+  <ul id="progressbar">
+    <li class="active">CREATE WORKFLOW</li>
+    <li>DESIGN WORKFLOW</li>
+    <li>DESIGN FORM</li>
+    <li>PUBLISH WORKFLOW</li>
+  </ul>
+  <!-- fieldsets -->
+  <fieldset>
+    <h2 class="fs-title">Create new</h2>
+    <h3 class="fs-subtitle">workflow</h3>
+
+        {% csrf_token %}
+        <input type="text" name="name" placeholder="Name of the Workflow" />
+        <input type="text" name="description" placeholder="Short description for users" />
+        <ul><input type="submit" name="submit" class="next action-button" value="Next" /></ul>
+
+
+  </fieldset>
+
+</form>
+
+
+  <!-- JavaScript -->
+    <script src="{% static 'js/jquery-1.10.2.js' %}"></script>
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+	<script src="{% static 'js/owl.carousel.js' %}"></script>
+	<script src="{% static 'js/script.js' %}"></script>
+   <!-- CORE JQUERY  -->
+    <script src="{% static 'assets/plugins/jquery-1.10.2.js' %}"></script>
+    <!-- BOOTSTRAP CORE SCRIPT   -->
+    <script src="{% static 'assets/plugins/bootstrap.js' %}"></script>
+
+    <!-- CUSTOM SCRIPTS -->
+    <script src="{%static 'assets/js/custom.js' %}"></script>
+
+</body>
+
+
+{% endblock %}

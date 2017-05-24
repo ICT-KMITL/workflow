@@ -1,0 +1,86 @@
+{% extends 'workflows/base.html' %}
+{% block title %}Welcome {{ user.username }}! {% endblock %}
+{% block body %}
+    {% load staticfiles %}
+
+    <style>
+        input[type=text] {
+            width: 130px;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: white;
+            background-position: 10px 10px;
+            background-repeat: no-repeat;
+            padding: 12px 20px 12px 40px;
+            -webkit-transition: width 0.4s ease-in-out;
+            transition: width 0.4s ease-in-out;
+            margin-top: 80px;
+            margin-left: 50px;
+        }
+
+        input[type=text]:focus {
+            width: 90%;
+        }
+
+        table {
+            border: 2px solid dimgray;
+            width: 90%;
+            margin-left: 50px;
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+        tr{
+            border: 1px solid grey;
+        }
+
+
+    </style>
+
+
+
+
+
+     <div class="content-section-b">
+                    <div class="container">
+                        <div class="row">
+                            <h4 class="section-heading">Build you team {{user.username}}</h4>
+
+            </div>
+                        <div class="content">
+                            <div id="chat-section"></div>
+                            <input type="textarea" id="textarea" class="form-control" placeholder="Type Something..." style="width: 800px">
+                            <button id="send-button" class=" btn-embossed btn-primary pull-right">Send</button>
+                        </div>
+
+                            </body>
+
+                        <script>
+                            socket = new WebSocket("ws://" + window.location.host + "/chat3/");
+                            socket.onmessage = function(e) {
+                                var chatSection = document.getElementById("chat-section");
+                                var p = document.createElement('p');
+                                var node = document.createTextNode(e.data);
+                                p.appendChild(node);
+                                chatSection.appendChild(p);
+                            };
+                            if (socket.readyState == WebSocket.OPEN)
+                                socket.onopen();
+                            var sendButton = document.getElementById("send-button");
+                            sendButton.onclick = function()
+                            {
+                                var msg = document.getElementById("textarea").value;
+                                var user1 = "{{ user }}";
+                                var user1_msg = user1 + ": " + msg;
+                                socket.send(JSON.stringify( user1_msg));
+                                document.getElementById("textarea").value = '';
+
+                                <!-- put it in database table -->
+
+                            };
+                        </script>
+                    </div>
+                </div>
+
+{% endblock %}

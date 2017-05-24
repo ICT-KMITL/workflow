@@ -25,16 +25,433 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
 
 
+
     <style>
 
-        table {
-            margin-left: 130px;
-            float: left;
-            padding: 15px;
+        @import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700);
+
+        .no-select, .grid-toggle, ul.grid.grid-list .grid-head ul li {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -o-user-select: none;
+            user-select: none;
         }
 
-        td {
-            border: 10px solid white;
+        ::-webkit-input-placeholder {
+            color: #5d7592;
+        }
+
+        :-moz-placeholder {
+            color: #5d7592;
+        }
+
+        ::-moz-placeholder {
+            color: #5d7592;
+        }
+
+        :-ms-input-placeholder {
+            color: #5d7592;
+        }
+
+        .m {
+            font-size: 28px;
+        }
+
+        #body1 {
+            margin: auto;
+            text-align: center;
+            background: #f9fcfe;
+            color: #38405e;
+            font-size: 16px;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 400;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
+        header {
+            width: 100%;
+            background: #38405e;
+            padding: 3em 0;
+            color: white;
+        }
+
+        header h1 {
+            font-weight: 300;
+            font-size: 36px;
+            margin: 0.75em 0;
+        }
+
+        header h1 span {
+            font-size: 90%;
+            color: #1bbbef;
+        }
+
+        main {
+            padding: 1.5em 0 0;
+        }
+
+        .ctrls {
+            margin-bottom: 1em;
+        }
+
+        .ctrls:after {
+            content: '';
+            clear: both;
+            display: block;
+        }
+
+        .filter {
+            float: left;
+            width: 75%;
+            padding-left: 2.5em;
+        }
+
+        .filter .m {
+            color: #5d7592;
+            position: absolute;
+            margin-left: -1.25em;
+        }
+
+        .filter input {
+            width: 100%;
+            vertical-align: top;
+            height: 2em;
+            border: none;
+
+            font-size: 16px;
+            font-weight: 300;
+            color: #5d7592;
+            outline: none;
+            padding: 0 0.5em;
+        }
+
+        .grid-toggle {
+            cursor: pointer;
+            float: right;
+        }
+
+        .grid-toggle a span {
+            color: #5d7592;
+        }
+
+        .grid-toggle a span:first-child {
+            color: #38405e;
+            margin-right: 12px;
+        }
+
+        .grid-toggle a.active span:first-child {
+            color: #5d7592;
+        }
+
+        .grid-toggle a.active span:last-child {
+            color: #38405e;
+        }
+
+        .btn {
+            text-decoration: none;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: #5d7592;
+        }
+
+        ul.grid {
+            text-align: center;
+        }
+
+        ul.grid .grid-body ul li span {
+            display: inline-block;
+            line-height: normal;
+            vertical-align: middle;
+        }
+
+        ul.grid .grid-body ul li span.grid-icon {
+            color: #476283;
+        }
+
+        ul.grid .grid-body ul li span.grid-title a {
+            font-size: 16px;
+            font-weight: 500;
+            color: #38405e;
+            text-decoration: none;
+        }
+
+        ul.grid .grid-body ul li span.grid-title a:hover {
+            text-decoration: underline;
+        }
+
+        ul.grid .grid-body ul li span.grid-usericon {
+            margin-right: 12px;
+            font-size: 0;
+            width: 36px;
+            height: 36px;
+            line-height: 36px;
+            text-align: center;
+            background: #1bbbef;
+            -moz-border-radius: 100px;
+            -webkit-border-radius: 100px;
+            border-radius: 100px;
+        }
+
+        ul.grid .grid-body ul li span.grid-usericon:first-letter {
+            color: white;
+            font-size: 16px;
+        }
+
+        ul.grid .grid-body ul li span.grid-date, ul.grid .grid-body ul li span.grid-user {
+            color: #5d7592;
+            font-size: 14px;
+        }
+
+        ul.grid .grid-body ul li span a .m {
+            color: #5d7592;
+        }
+
+        ul.grid.grid-thumb:after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+
+        ul.grid.grid-thumb .grid-head {
+            display: none;
+        }
+
+        ul.grid.grid-thumb .grid-body {
+            width: 50%;
+            float: left;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            margin-bottom: 2em;
+        }
+
+        ul.grid.grid-thumb .grid-body:nth-child(even) {
+            padding-right: 1em;
+        }
+
+        ul.grid.grid-thumb .grid-body:nth-child(odd) {
+            padding-left: 1em;
+        }
+
+        ul.grid.grid-thumb .grid-body ul {
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            background: white;
+            border: 1px solid #dde8f0;
+            padding: 1em 1.5em .75em;
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            border-radius: 5px;
+            float: left;
+            width: 100%;
+        }
+
+        ul.grid.grid-thumb .grid-body ul:after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+
+        ul.grid.grid-thumb .grid-body ul li {
+            position: relative;
+        }
+
+        ul.grid.grid-thumb .grid-body ul li span.grid-icon {
+            display: block;
+            font-size: 56px;
+            margin: 0 0 12px;
+        }
+
+        ul.grid.grid-thumb .grid-body ul li span.grid-title {
+            display: block;
+            margin-bottom: 1em;
+        }
+
+        ul.grid.grid-thumb .grid-body ul li span.grid-user {
+            margin-bottom: 2px;
+        }
+
+        ul.grid.grid-thumb .grid-body ul li span.grid-user .grid-usericon {
+            position: absolute;
+            left: 0;
+            bottom: -37px;
+        }
+
+        ul.grid.grid-thumb .grid-body ul li span.grid-date {
+            display: block;
+        }
+
+        ul.grid.grid-thumb .grid-body ul li span.grid-options {
+            float: right;
+        }
+
+        ul.grid.grid-list {
+            background: white;
+            border: 1px solid #dde8f0;
+            padding: 0 2em;
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            border-radius: 5px;
+        }
+
+        ul.grid.grid-list li.grid-body {
+            border-bottom: 1px solid #dde8f0;
+        }
+
+        ul.grid.grid-list li.grid-body:last-child, ul.grid.grid-list li.grid-body.last {
+            border-bottom: none;
+        }
+
+        ul.grid.grid-list .grid-head ul:after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+
+        ul.grid.grid-list .grid-head ul li {
+            font-size: 16px;
+            border: none;
+            text-align: left;
+            padding: 2em 0 1em;
+            float: left;
+        }
+
+        ul.grid.grid-list .grid-head ul li a {
+            cursor: pointer;
+            color: #1bbbef;
+            font-weight: 600;
+        }
+
+        ul.grid.grid-list .grid-head ul li a:hover {
+            text-decoration: underline;
+        }
+
+        ul.grid.grid-list .grid-body ul:after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+
+        ul.grid.grid-list .grid-body ul li {
+            border: none;
+            text-align: left;
+            height: 5em;
+            line-height: 5em;
+            padding: 0;
+            float: left;
+        }
+
+        ul.grid.grid-list .grid-body ul li:first-child {
+            text-align: left;
+            width: 40%;
+        }
+
+        ul.grid.grid-list .grid-body ul li:nth-child(2) {
+            width: 30%;
+        }
+
+        ul.grid.grid-list .grid-body ul li:nth-child(3) {
+            width: 15%;
+        }
+
+        ul.grid.grid-list .grid-body ul li:last-child {
+            text-align: right;
+            width: 15%;
+        }
+
+        ul.grid.grid-list .grid-body ul li span.grid-icon {
+            margin-right: 0.5em;
+        }
+
+        ul.grid.grid-list .grid-body ul li span.grid-username {
+            width: 100px;
+        }
+
+        li.clear-fix {
+            display: block;
+            clear: both;
+        }
+
+        li.pagination {
+            padding: 1em 0 2em;
+        }
+
+        li.pagination p {
+            font-size: 14px;
+        }
+
+        li.pagination ul.pager {
+            margin: 2em 0;
+        }
+
+        li.pagination ul.pager li {
+            display: inline;
+        }
+
+        li.pagination ul.pager li:first-child {
+            margin-right: 1em;
+        }
+
+        li.pagination ul.pager li a {
+            color: #1bbbef;
+            text-decoration: none;
+            padding: 0.5em 1.5em;
+            border: 1px solid #1bbbef;
+            -moz-border-radius: 100px;
+            -webkit-border-radius: 100px;
+            border-radius: 100px;
+        }
+
+        .animate-repeat {
+            list-style: none;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .animate-repeat.ng-move,
+        .animate-repeat.ng-enter,
+        .animate-repeat.ng-leave {
+            -webkit-transition: all ease-in-out 0.4s;
+            transition: all ease-in-out 0.4s;
+        }
+
+        .animate-repeat.ng-leave.ng-leave-active,
+        .animate-repeat.ng-move,
+        .animate-repeat.ng-enter {
+            opacity: 0;
+        }
+
+        .animate-repeat.ng-leave,
+        .animate-repeat.ng-move.ng-move-active,
+        .animate-repeat.ng-enter.ng-enter-active {
+            opacity: 1;
+        }
+
+        .grid-thumb .animate-repeat.ng-move,
+        .grid-thumb .animate-repeat.ng-enter,
+        .grid-thumb .animate-repeat.ng-leave {
+            -webkit-transition: none;
+            transition: none;
+        }
+
+        .grid-list .animate-repeat {
+            line-height: 5em;
+        }
+
+        .grid-list .animate-repeat.ng-leave.ng-leave-active,
+        .grid-list .animate-repeat.ng-move,
+        .grid-list .animate-repeat.ng-enter {
+            height: 0;
+        }
+
+        .grid-list .animate-repeat.ng-leave,
+        .grid-list .animate-repeat.ng-move.ng-move-active,
+        .grid-list .animate-repeat.ng-enter.ng-enter-active {
+            height: 5em;
         }
 
         button {
@@ -124,7 +541,7 @@
                 <table>
                     <tr>
                         <td width="150" height="150" bgcolor="#93c47d" align="center"><a
-                                href="{% url 'workflows:job' %}"><img src=" {% static 'image/Employee.png' %}"><h5>Job
+                                href="{% url 'workflows:create_job' %}"><img src=" {% static 'image/Employee.png' %}"><h5>Job
                             Application</h5></a></td>
                         <td width="150" height="150" bgcolor="#78909c" align="center"><a href="#2"><img
                                 src=" {% static 'image/PalmTree.png' %}"><h5>Vacation Request</h5></a></td>
@@ -133,10 +550,10 @@
                         <td width="150" height="150" bgcolor="#de445e" align="center"><a href="#4"><img
                                 src="{% static 'image/Trolley.png' %}"><h5>Business Meeting</h5></a></td>
                         <td width="150" height="150" bgcolor="#0097a7" align="center"><a
-                                href="{% url 'workflows:announce' %}"><img src="{% static 'image/Receipt.png' %}"><h5>
+                                href="{% url 'workflows:create_news' %}"><img src="{% static 'image/Receipt.png' %}"><h5>
                             News Posting</h5></a></td>
                         <td width="150" height="150" bgcolor="#93c47d" align="center"><a
-                                href="{% url 'workflows:funding' %}"><img src="{% static 'image/Bills.png' %}"><h5>
+                                href="{% url 'workflows:create_funding' %}"><img src="{% static 'image/Bills.png' %}"><h5>
                             Funding</h5></a></td>
                         <td width="150" height="150" bgcolor="whitesmoke" align="center"><a
                                 href="{% url 'workflows:create' %}"><img src="{% static 'image/Plus.png' %}"><h5>Create
@@ -154,7 +571,7 @@
                         <input type="file" name="file" id="file" class="input-file">
 
                         <label for="file" class="btn btn-tertiary js-labelFile">
-                            <i class="icon fa fa-check"></i>
+                            <i class="fa fa-upload" aria-hidden="true"></i>
                             <span class="js-fileName">Choose xml file</span>
                         </label>
                     </form>
@@ -167,28 +584,108 @@
                         <div class="row">
                             <h4 class="section-heading">Your Workflow(s)</h4>
 
-                            {% if workflows %}
-                                <table>
-                                    <tr>
+                            <body id="body1" ng-app="app" ng-controller="main">
 
-                                        {% for workflow in workflows %}
+                            <main>
+
+                                <div class="ctrls">
+
+                                    <div class="filter">
+                                        <span class="m m-search"></span>
+                                        <input type="text" ng-model="searchies" ng-change="onQueryChange(searchies)"
+                                               class="form-control" placeholder="Filter">
+                                    </div>
+
+                                    <div class="grid-toggle">
+                                        <a ng-click="gridToggle = !gridToggle" ng-class="{ 'active' : gridToggle }">
+                                            <i class="fa fa-th-large fa-2x" aria-hidden="true"></i>
+                                            &nbsp;
+                                            <i class="fa fa-list fa-2x" aria-hidden="true"></i>
+                                        </a>
+                                    </div>
+
+                                </div>
 
 
-                                            <td width="150" height="150" align="center">
-                                                <a href="{% url 'workflows:editWorkflow' workflow.id %}">
-                                                    <img src="{% static 'image/xmlfile.png' %}">
-                                                    <h5>{{ workflow.name }}</h5>
-                                                </a>
+                                <form role="form" action="{% url 'workflows:publish' %}" method="post"
+                                      enctype="multipart/form-data" id="form1">
 
-                                            </td>
 
-                                        {% endfor %}
-                                    </tr>
+                                    <ul class="grid"
+                                        ng-class="{ 'grid-list' : gridToggle, 'grid-thumb' : !gridToggle }">
+                                        <li class="grid-head">
+                                            <ul>
+                                                <li style="width:30%"><a ng-click="sort_by('name')">Name</a></li>
+                                                <li style="width:30%"><a ng-click="sort_by('user.name')">Description</a>
+                                                </li>
+                                                <li style="width:20%"><a ng-click="sort_by('date')">Date</a></li>
+                                                <li style="width:15%"><a ng-click="sort_by('date')">Select</a></li>
+                                                <li style="width:5%"></li>
+                                            </ul>
+                                        </li>
 
-                                </table>
-                            {% else %}
-                                <p class="lead">You have not created any workflow yet</p>
-                            {% endif %}
+                                        <li class="grid-body animate-repeat" ng-class="{'last':$last}">
+
+                                            {% for workflow in workflows %}
+
+                                                <ul>
+                                                    <li style="width:30%">
+
+
+                                                        <span class="grid-usericon"
+                                                              ng-style="{ 'background' : blue }">{{ workflow.name }}</span>
+                                                        <span class="grid-title"><a
+                                                                href="{% url 'workflows:editWorkflow' workflow.id %}">{{ workflow.name }}</a></span>
+
+                                                    </li>
+
+                                                    <li style="width:30%">
+              <span class="grid-user">
+
+                <span class="grid-username">{{ workflow.description }}</span>
+              </span>
+                                                    </li>
+
+                                                    <li style="width:20%">
+                                                        <span class="grid-date">11/34/1333</span>
+                                                    </li>
+
+
+                                                    <li style="width:15%">
+                                                        {% csrf_token %}
+                                                        <span class="grid-date"><input type="checkbox"
+                                                                                       name="publishChecked"
+                                                                                       value="{{ workflow.id }}"></span>
+                                                    </li>
+
+
+                                                    <li style="width:5%">
+                                                        <span class="grid-options"><a href="#"><span
+                                                                class="m m-ellipsis"></span></a></span>
+                                                    </li>
+
+
+                                                </ul>
+
+                                            {% endfor %}
+
+
+                                        </li>
+
+                                        <li class="clear-fix"></li>
+                                    </ul>
+
+                                    <pager total-items="totalItems" items-per-page="itemsPerPage" ng-model="currentPage"
+                                           max-size="maxSize" ng-change="pageChanged()"></pager>
+
+                                    <input type="submit" name="submit" id="submit" value="Publish"
+                                           class="btn wow tada btn-embossed btn-primary pull-right">
+                                </form>
+
+                            </main>
+
+                            </body>
+
 
 
                         </div>
@@ -197,6 +694,11 @@
 
 
                 <!-- JavaScript -->
+                <script src='http://ajax.googleapis.com/ajax/libs/angularjs/1.3.2/angular.min.js'></script>
+                <script src='http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.0/ui-bootstrap-tpls.min.js'></script>
+                <script src='http://ajax.googleapis.com/ajax/libs/angularjs/1.3.1/angular-animate.js'></script>
+                <script src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js'></script>
+
                 <script src="{% static 'js/jquery-1.10.2.js' %}"></script>
                 <script src="{% static 'js/bootstrap.js' %}"></script>
                 <script src="{% static 'js/owl.carousel.js' %}"></script>
@@ -237,6 +739,165 @@
                     });
 
 
+                </script>
+
+                <script>
+                    angular.module('app', ['ui.bootstrap', 'ngAnimate'])
+                            .factory('sortable', ['$filter', '$rootScope', function ($filter, $rootScope) {
+
+                                return function (scope, data, itemsPerPage, initSortingOrder) {
+
+
+                                    scope.sortingOrder = initSortingOrder;
+                                    scope.reverse = false;
+                                    scope.filteredItems = [];
+                                    scope.groupedItems = [];
+                                    scope.itemsPerPage = itemsPerPage;
+                                    scope.pagedItems = [];
+                                    scope.currentPage = 1;
+                                    scope.items = data;
+                                    scope.maxSize = 5;
+
+                                    var searchMatch = function (haystack, needle) {
+                                        if (!needle) {
+                                            return true;
+                                        }
+                                        return haystack.toLowerCase().indexOf(needle.toLowerCase()) !== -1;
+                                    };
+
+
+                                    // init the filtered items
+                                    scope.search = function () {
+
+                                        scope.filteredItems = $filter('filter')(scope.items, $rootScope.query);
+
+                                        // take care of the sorting order
+                                        if (scope.sortingOrder !== '') {
+                                            scope.filteredItems = $filter('orderBy')(scope.filteredItems, scope.sortingOrder, scope.reverse);
+                                        }
+
+                                        scope.currentPage = 1;
+
+                                        // now group by pages
+                                        scope.groupToPages();
+
+                                        // reset the total items for the pagination buttons
+                                        scope.totalItems = scope.filteredItems.length;
+                                    };
+
+
+                                    // calculate page in place
+                                    scope.groupToPages = function () {
+                                        scope.pagedItems = [];
+
+                                        for (var i = 0; i < scope.filteredItems.length; i++) {
+                                            if (i % scope.itemsPerPage === 0) {
+                                                scope.pagedItems[Math.floor(i / scope.itemsPerPage)] = [scope.filteredItems[i]];
+                                            } else {
+                                                scope.pagedItems[Math.floor(i / scope.itemsPerPage)].push(scope.filteredItems[i]);
+                                            }
+                                        }
+                                    };
+
+
+                                    scope.range = function (start, end) {
+                                        var ret = [];
+                                        if (!end) {
+                                            end = start;
+                                            start = 0;
+                                        }
+                                        for (var i = start; i < end; i++) {
+                                            ret.push(i);
+                                        }
+                                        return ret;
+                                    };
+
+
+                                    // functions have been described process the data for display
+                                    scope.search();
+
+
+                                    // change sorting order
+                                    scope.sort_by = function (newSortingOrder) {
+                                        if (scope.sortingOrder == newSortingOrder)
+                                            scope.reverse = !scope.reverse;
+
+                                        scope.sortingOrder = newSortingOrder;
+
+                                        // call search again to make sort affect whole query
+                                        scope.search();
+                                    };
+
+                                    scope.sort_by(initSortingOrder);
+                                    scope.totalItems = scope.filteredItems.length;
+                                }
+
+                            }])
+                            .controller('main', ['$scope', '$rootScope', 'sortable', function ($scope, $rootScope, sortable) {
+
+                                $rootScope.query = '';
+
+                                $scope.gridToggle = true;
+
+                                $scope.onQueryChange = function (val) {
+                                    $rootScope.query = val;
+                                    $scope.search();
+                                };
+
+                                var items = [
+                                    {
+                                        'icon': 'm-munkey',
+                                        'name': 'A Munkey Page',
+                                        'date': 'Yesterday at Noon',
+                                        'user': {'name': 'Munkey', 'color': '#07D5E5'}
+                                    },
+                                    {
+                                        'icon': 'm-bug',
+                                        'name': 'Mobile Splash Page',
+                                        'date': 'Yesterday at 4:30pm',
+                                        'user': {'name': 'Munkey', 'color': '#07D5E5'}
+                                    },
+                                    {
+                                        'icon': 'm-photo',
+                                        'name': 'Some Other Site',
+                                        'date': 'Today at 3:35am',
+                                        'user': {'name': 'Someone', 'color': '#456183'}
+                                    },
+                                    {
+                                        'icon': 'm-desktop',
+                                        'name': 'Jerry\'s Blog',
+                                        'date': 'Thursday at 7:15pm',
+                                        'user': {'name': 'Jerry', 'color': '#4677A7'}
+                                    },
+                                    {
+                                        'icon': 'm-form',
+                                        'name': 'Ape\'s Capture Form',
+                                        'date': 'Today at Noon',
+                                        'user': {'name': 'Ape', 'color': '#09ABC5'}
+                                    },
+                                    {
+                                        'icon': 'm-phone',
+                                        'name': 'Some Mobile Site',
+                                        'date': 'Thursday at 1:27pm',
+                                        'user': {'name': 'Someone', 'color': '#456183'}
+                                    },
+                                    {
+                                        'icon': 'm-bell',
+                                        'name': 'Fish\'s Wordpress Site',
+                                        'date': 'Yesterday at Noon',
+                                        'user': {'name': 'Fish', 'color': '#1CB7BB'}
+                                    },
+                                    {
+                                        'icon': 'm-group',
+                                        'name': 'Kitty Kat Kapture Form',
+                                        'date': 'Wednesday at 7:15pm',
+                                        'user': {'name': 'Kitty', 'color': '#1D9D9D'}
+                                    }
+                                ];
+
+                                sortable($scope, items, 6, 'updated_at');
+
+                            }]);
                 </script>
 
 {% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'workflows/base.html' %}
+{% block title %}Welcome {{ user.username }}! {% endblock %}
+{% block body %}
+{% load staticfiles %}
+<style>
+    body { padding-top: 70px; }
+</style>
+Helloooooo
+    Hleorf
+<script>
+    var checkedList = {{ checkedList|safe }}
+    for (var i = 0; i < checkedList.length; i++) {
+        console.log(checkedList[i]);
+        document.write(checkedList[i]);
+}
+</script>
+{% endblock %}

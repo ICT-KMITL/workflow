@@ -1,6 +1,12 @@
 from channels.generic import websockets
 
+from django.http import HttpResponse
 from . import listeners, exceptions
+from channels.auth import channel_session_user_from_http
+
+from channels.handler import AsgiHandler
+import json
+from channels import Group
 
 
 class EventListenerMixin:
@@ -53,5 +59,18 @@ class ChannelConsumer(websockets.JsonWebsocketConsumer, EventListenerMixin):
 
     def receive(self, message, **kwargs):
         self.run("pre_receive")
+        #Group("%s" % < user >).add(message.reply_channel)
         self.group_send(self.connection_groups()[0], message)
         self.run("post_receive")
+'''
+@channel_session_user_from_http
+def ws_connect(message):
+    message.reply_channel.send({"accept": True})
+    Group("User-%s" % message.user.username[0]).add(message.reply_channel)
+    Group("all_users").add(message.reply_channel)
+def ws_message(message):
+    pass
+
+def ws_disconnect(message):
+    Group("all_users").discard(message.reply_channel)
+'''

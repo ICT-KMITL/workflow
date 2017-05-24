@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 
 # Create your models here.
@@ -79,17 +80,32 @@ class WorkflowTemplate(models.Model):
     #start = models.ForeignKey(StartEvent)
     creator = models.ForeignKey(User,default=1)
 
-
+class ExecutingFlow(models.Model):
+    id = models.AutoField(primary_key=True)
+    status = models.BooleanField(default=False)
+    templateId = models.ForeignKey(WorkflowTemplate, related_name = "template", default=1)
+    executor = models.ForeignKey(User, default=1)
+    executingDate = models.DateField(default=timezone.now)
+    currentFlow = models.CharField(max_length=50,default='')
+    xml =  models.TextField(default='')
 
 class PendingTask(models.Model):
     taskId = models.AutoField(primary_key=True)
-    assignToUser = models.TextField(max_length=50)
+    assignToUser = models.ForeignKey(User, related_name='assignUser')
     form = models.TextField(max_length=400)
-    listenner = models.ForeignKey(User)
-    #belongToWfId = models.ForeignKey()
-    taskName = models.TextField(max_length=100)
-    #CurrentFlowId = models.ForeignKey()
-    State = models.BooleanField(default=True)
+    listener = models.ForeignKey(User,related_name='listener',default = 1)
+    belongToWFId = models.ForeignKey(ExecutingFlow,default = 1)
+    taskName = models.CharField(max_length=100)
+    currentFlow = models.CharField(max_length=50,default='')
+    state = models.BooleanField(default=False)
+
+class TimerEventBased(models.Model):
+    id = models.AutoField(primary_key=True)
+    eventTime =  models.DateField(default=timezone.now)
+    currentFlow = models.CharField(max_length=50, default='')
+    elementId = models.CharField(max_length=50, default='')
+    assignToUser = models.ForeignKey(User, related_name='timerAssignUser')
+    belongToWFId = models.ForeignKey(ExecutingFlow,default = 1)
 
 class Channel(models.Model):
     id = models.AutoField(primary_key=True)
@@ -109,9 +125,10 @@ class Message(models.Model):
     timestamp = models.TimeField(auto_now=False, auto_now_add=False)
     room = models.ForeignKey(Channel ,default='')
 
-class ExecutingFlow(models.Model):
-    id = models.AutoField(primary_key=True)
-    status = models.BooleanField(default=True)
+
+
+
+
 
 
 

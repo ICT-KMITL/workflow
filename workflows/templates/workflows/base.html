@@ -108,13 +108,16 @@
         <div class="collapse navbar-collapse navbar-right navbar-ex1-collapse">
             <ul class="nav navbar-nav">
 
-                <li class="menuItem"><a href="#whatis"> Chat </a>
+                <li class="menuItem"><a href="{% url 'workflows:tasks' %}">Task</a></li>
+
+                <li class="menuItem"><a href="{% url 'workflows:track' %}"> Track </a>
+                    <!--
                       <div class="chat_box">
-	<div class="chat_head"> Chat Box</div>
-	<div class="chat_body">
-	<div class="user"> Krishna Teja</div>
-	</div>
-  </div>
+                        <div class="chat_head"> Chat Box</div>
+                        <div class="chat_body">
+                        <div class="user"> Krishna Teja</div>
+                        </div>
+                      </div> -->
                 </li>
 
                 <li class="dropdown">
@@ -123,11 +126,11 @@
                     <ul class="dropdown-menu">
                         <li><a href="{% url 'workflows:profileedit' %}">Edit Profile</a></li>
                         <li><a href="{% url 'workflows:profileDetail' %}">View Profile</a></li>
-                        <li><a href="{% url 'workflows:index' %}">My Workflow</a></li>
+
                     </ul>
                 </li>
 
-                <li class="menuItem"><a href="{% url 'workflows:task_noti' %}">Notification</a></li>
+                <li class="menuItem"><a href="{% url 'workflows:task_noti' %}">Community</a></li>
                 <li class="menuItem"><a href="{% url 'workflows:logout_user' %}">Logout</a></li>
             </ul>
         </div>
@@ -135,6 +138,7 @@
     </div>
 </nav>
 
+<!--
 
 <div class="msg_box" style="right:290px">
 	<div class="msg_head">Krishna Teja
@@ -150,7 +154,7 @@
 	<div class="msg_footer"><textarea class="msg_input" rows="4"></textarea></div>
 </div>
 </div>
-
+-->
 
 <!-- FullScreen -->
 {% block body %}
@@ -221,10 +225,16 @@
 </footer>
 
 <!-- JavaScript -->
-<script src="{% static 'js/jquery-1.10.2.js' %}"></script>
+<script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js'></script>
+<script src='https://formbuilder.online/assets/js/form-builder.min.js'></script>
 <script src="{% static 'js/bootstrap.js' %}"></script>
 <script src="{% static 'js/owl.carousel.js' %}"></script>
 <script src="{% static 'js/script.js' %}"></script>
+<script src='http://kevinchappell.github.io/formBuilder/assets/js/form-render.min.js'></script>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js'></script>
+<script src=" {% static 'js/form-render.js' %} "></script>
+
 <!-- StikyMenu -->
 <script src="{% static 'js/stickUp.min.js' %}"></script>
 
@@ -248,6 +258,8 @@
 <script src="{% static 'js/uiMorphingButton_inflow.js' %}"></script>
 <!-- Magnific Popup core JS file -->
 <script src="{% static 'js/jquery.magnific-popup.js' %}"></script>
+
+<link rel='stylesheet' href='https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css'>
 </body>
 <!---->
 </html>

@@ -2,30 +2,36 @@
 {% block title %}Welcome {{ user.username }}! {% endblock %}
 {% block body %}
     {% load staticfiles %}
+
+
     <link href="http://fonts.googleapis.com/css?family=Montserrat" rel='stylesheet' type='text/css'>
-    <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css'>
     <link rel="stylesheet" type="text/css" href="{% static 'css/sidebarstyle.css' %}">
+    <link href='https://formbuilder.online/assets/css/form-builder.min.css'>
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css'>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/Popupstyle.css' %}">
 
-
+    <script src="{% static 'js/form-render.js' %}"></script>
 
 
     <style type="text/css">
         html, body, #canvas {
-            height: 100%;
+            height: 93%;
             padding: 0;
         }
 
-
-
         #canvas {
-            margin-top: 60px;
-
+            margin-top: 70px;
         }
+
+     #close{
+         margin: auto;
+         padding: 0;
+
+     }
 
 
     </style>
 
-    <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
     <script>
         $(document).ready(function () {
             // Test for placeholder support
@@ -78,74 +84,9 @@
     <link rel="stylesheet"
           href=" {% static 'workflows/bower_components/bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css' %} ">
 
-
     <a href="https://github.com/eligrey/FileSaver.js/blob/master/FileSaver.js" target="_blank"></a>
 
-    <div class="container-fluid" >
-        <div class="row row-offcanvas">
 
-            <br>
-            <br>
-            <div class="sidebar-offcanvas sidebar" >
-
-                <div class="panel panel-default" style="height:100%;">
-
-                    <div class="panel-heading">Property Panel</div>
-
-                    <p id="ElementID">test</p>
-
-
-                    <br>
-                    <br>
-                    <br>
-                    <div class="panel-body" style="height:100%;">
-                        <div class="row">
-
-                            <div class="col-lg-10">
-                                <div class="input-group">
-      <span class="input-group-addon">
-        <input type="checkbox" aria-label="...">
-      </span>
-                                    <input type="text" class="form-control" style="width:100%;" placeholder="Name">
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-                            <br>
-                            <br>
-                            <br>
-                            <div class="col-lg-10">
-                                <div class="input-group">
-      <span class="input-group-addon">
-        <input type="radio" aria-label="...">
-      </span>
-                                    <input type="text" class="form-control" aria-label="..."  placeholder="Task">
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-                        </div><!-- /.row -->
-                    </div>
-                </div><!--/.panel-->
-                <div class="panel panel-default">
-                    <div class="panel-heading">Widget</div>
-                    <div class="panel-body">
-                        <p><a href="#"><i class="glyphicon glyphicon-check"></i> Action item</a></p>
-                        <p><a href="#"><i class="glyphicon glyphicon-unchecked"></i> Action item</a></p>
-                        <p class=""><a href="#"><i class="glyphicon glyphicon-plus"></i> Action item</a></p>
-                        <p class=""><a href="#"><i class="glyphicon glyphicon-minus"></i> Action item</a></p>
-                        <p><a href="#"><i class="glyphicon glyphicon-plus"></i> Action item</a></p>
-                        <p><a href="#"><i class="glyphicon glyphicon-list"></i> Action item</a></p>
-                    </div>
-                </div><!--/.panel-->
-            </div><!-- /.cols-->
-
-            <div class="content">
-                <p class="pull-right">
-                    <a type="button" class="btn btn-collapse btn-sm" data-toggle="offcanvas"><i
-                            class="glyphicon glyphicon-chevron-down"></i> Sidebar</a>
-                </p>
-
-
-            </div><!-- /.cols-->
-        </div><!-- /.row-->
-    </div><!-- /.container -->
 
 
 
@@ -156,33 +97,54 @@
 
     </div>
 
-    <!------------------------------------->
-<div button3 style=" margin-left:30%">
-   <button  id="download-button" type="submit" class="btn btn-primary btn-lg active">Download XML</button>
-    <button id="saveXML-button" type="submit" class="btn btn-default btn-lg active">Save</button>
-       <form role="form" action="{% url 'workflows:design_form' %}" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-default btn-lg active">Design form</button>
-    </form>
 
-</div>
+
+    <!--------------------------Add Form--------------------------->
+    <div class="pop">
+
+    <div class="row">
+        <div class="text-center"> <h3>Form creator</h3></div>
+         <div class="close-pop" id ="close">✖</div>
+    </div>
+
+        <!--<p id="ElementID"></p>-->
+        <form action="" id="form-builder-pages">
+            <div id="page-1" class="fb-editor"></div>
+            <div id="new-page"></div>
+        </form>
+
+    </div>
+
+
+    <!--------------------------Click at Lane----------------------->
+    <div class="lane">
+        <span class="close-lane">✖</span>
+        Lane
+    </div>
+
+    <!--------------------------Save all----------------------------->
+
+    <div class="row" style="margin-bottom: 5%">
+        <div class="col text-center">
+            <button  id="saveAll" type="submit"  class="btn btn-primary btn-lg active">Save form</button>
+            <button  id="download-button" type="submit" class="btn btn-primary btn-lg active">Download XML</button>
+            <button  id="saveXML-button" type="submit"class="btn btn-primary btn-lg active">Save diagram</button>
+        </div>
+    </div>
 
 <!--
+    <button id="saveAll" type="submit" class="btn btn-default btn-lg active">Save All</button>
+    <div button3 style=" margin-left:30%">
+        <button id="download-button" type="submit" class="btn btn-primary btn-lg active">Download XML</button>
+        <button id="saveXML-button" type="submit" class="btn btn-default btn-lg active">Save</button>
+        <form role="form" action="{% url 'workflows:design_form' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-default btn-lg active">Design form</button>
+        </form>
+    </div>
+  -->
 
-    <button id="download-button" type="submit" class="btn btn-primary">Download XML</button>
-    <button id="saveXML-button" type="submit" class="btn btn-primary">Save</button>
-
-    <form role="form" action="{% url 'workflows:design_form' %}" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-primary">Design form</button>
-    </form>
--->
-
-
-    <!-- scripts -->
-
-    <!-- bpmn-js modeler -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <!------------------- bpmn-js modeler -------------->
     <script src=" {% static 'workflows/bower_components/bpmn-js/dist/bpmn-modeler.js' %} "></script>
     <script src=" {% static 'workflows/modeler.js' %} ">
 
@@ -202,9 +164,29 @@
         });
     </script>
 
+    <script>
+        var saveButton = document.querySelector('#saveAll');
+        saveButton.addEventListener('click', function () {
+
+            console.info('diagram saved');
+            //console.info(xml);
+            $.ajax({
+                url: "modeler/",
+                type: "POST",
+                data: {userXml: window.xml}
+            }).done(function (data) {
+                location.href = "/workflows/";
+            });
+
+
+        });
+
+
+    </script>
+
+
 
     {% if editingWorkflow %}
-
         <!-- application -->
         <script type="text/javascript">
 
@@ -218,6 +200,7 @@
 
                 // import function
                 function importXML(xml) {
+                    window.xml = xml
 
                     // import diagram
                     bpmnModeler.importXML(xml, function (err) {
@@ -234,26 +217,70 @@
 
                     var eventBus = bpmnModeler.get('eventBus');
 
-// you may hook into any of the following events
-var events = [
+                    // you may hook into any of the following events
+                    var events = [
 
-  'element.click',
+                        'element.dblclick',
 
-];
-
-events.forEach(function(event) {
-
-  eventBus.on(event, function(e) {
-    // e.element = the model element
-    // e.gfx = the graphical element
-
-    document.getElementById("ElementID").innerHTML = "e.element.id";
+                    ];
 
 
-    console.log(event, 'on', e.element.id);
-  });
-});
+                    events.forEach(function (event) {
 
+                        eventBus.on(event, function (e) {
+                            // e.element = the model element
+                            // e.gfx = the graphical element
+                            //document.getElementById("ElementID").innerHTML = e.element.id;
+                            window.currentId = e.element.id;
+                            console.log(e);
+
+                            if (e.element.type == "bpmn:Lane")
+                                console.log("lane");
+                            else if (e.element.type != "bpmn:Collaboration") {
+                                //$(".pop").fadeIn(300);
+
+                                var xmlDocument = $.parseXML(window.xml);
+                                var xml = $(xmlDocument);
+                                var tasks = xml.find("task");
+
+                                tasks.each(function (task_i) {
+                                    if (tasks[task_i].id == e.element.id) {
+
+                                        //console.log("doc", $(tasks[task_i]).find("documentation").text())
+                                        if ($(tasks[task_i]).find("documentation").text() == "") {
+                                            $(".pop").fadeIn(300);
+                                            renderForm();
+                                        }
+                                        else {
+
+                                            $(".pop").fadeIn(300);
+                                            renderForm($(tasks[task_i]).find("documentation").text());
+                                            console.log($(tasks[task_i]).find("documentation").text());
+
+                                            //$('#form-builder-pages').formRender({
+                                            //formData: formData,
+                                            //templates: templates
+                                            // });
+                                        }
+
+                                    }
+                                });
+                            }
+                        });
+                    });
+
+
+                    //events.forEach(function (event) {
+
+                    //eventBus.on(event, function (e) {
+                    // e.element = the model element
+                    // e.gfx = the graphical element
+
+                    //document.getElementById("ElementID").innerHTML = "e.element.id";
+
+                    //console.log(event, 'on', e.element.id);
+                    //});
+                    //});
                     // save diagram on button click
 
 
@@ -309,14 +336,13 @@ events.forEach(function(event) {
 
     {% elif xml %}
 
-
         <!-- application -->
         <script type="text/javascript">
 
             (function (BpmnModeler, $) {
 
                 // create modeler
-                document.getElementById("canvas").innerHTML = 5 + 5;
+                //document.getElementById("canvas").innerHTML = 5 + 5;
                 var bpmnModeler = new BpmnModeler({
                     container: '#canvas'
                 });
@@ -324,6 +350,7 @@ events.forEach(function(event) {
 
                 // import function
                 function importXML(xml) {
+                    window.xml = xml
 
                     // import diagram
                     bpmnModeler.importXML(xml, function (err) {
@@ -340,23 +367,58 @@ events.forEach(function(event) {
 
                     var eventBus = bpmnModeler.get('eventBus');
 
-// you may hook into any of the following events
-var events = [
+                    // you may hook into any of the following events
+                    var events = [
 
-  'element.click',
+                        'element.dblclick',
 
-];
+                    ];
 
-events.forEach(function(event) {
+                    events.forEach(function (event) {
 
-  eventBus.on(event, function(e) {
-    // e.element = the model element
-    // e.gfx = the graphical element
-      document.getElementById("ElementID").innerHTML = "e.element.id";
+                        eventBus.on(event, function (e) {
+                            // e.element = the model element
+                            // e.gfx = the graphical element
+                            //document.getElementById("ElementID").innerHTML = e.element.id;
+                            window.currentId = e.element.id;
+                            console.log(e);
 
-    console.log(event, 'on', e.element.id);
-  });
-});
+                            if (e.element.type == "bpmn:Lane")
+                                console.log("lane");
+                            else if (e.element.type != "bpmn:Collaboration") {
+                                //$(".pop").fadeIn(300);
+
+
+                                var xmlDocument = $.parseXML(window.xml);
+                                var xml = $(xmlDocument);
+
+                                var tasks = xml.find("task");
+                                tasks.each(function (task_i) {
+                                    if (tasks[task_i].id == e.element.id) {
+
+                                        //console.log("doc", $(tasks[task_i]).find("documentation").text())
+                                        if ($(tasks[task_i]).find("documentation").text() == "") {
+                                            $(".pop").fadeIn(300);
+                                            renderForm();
+                                        }
+                                        else {
+
+                                            $(".pop").fadeIn(300);
+                                            renderForm($(tasks[task_i]).find("documentation").text());
+                                            console.log($(tasks[task_i]).find("documentation").text());
+
+                                            //$('#form-builder-pages').formRender({
+                                            //formData: formData,
+                                            //templates: templates
+                                            // });
+                                        }
+
+                                    }
+                                });
+                            }
+                        });
+                    });
+
 
                     // save diagram on button click
 
@@ -433,6 +495,8 @@ events.forEach(function(event) {
                 // import function
                 function importXML(xml) {
 
+                    window.xml = xml
+
                     // import diagram
                     bpmnModeler.importXML(xml, function (err) {
 
@@ -448,23 +512,59 @@ events.forEach(function(event) {
 
                     var eventBus = bpmnModeler.get('eventBus');
 
-// you may hook into any of the following events
-var events = [
+                    // you may hook into any of the following events
+                    var events = [
 
-  'element.click',
+                        'element.dblclick',
 
-];
+                    ];
+                    events.forEach(function (event) {
 
-events.forEach(function(event) {
+                        eventBus.on(event, function (e) {
+                            // e.element = the model element
+                            // e.gfx = the graphical element
+                            //document.getElementById("ElementID").innerHTML = e.element.id;
+                            window.currentId = e.element.id;
+                            console.log(e);
 
-  eventBus.on(event, function(e) {
-    // e.element = the model element
-    // e.gfx = the graphical element
-       $('.row-offcanvas').toggleClass('active');
- document.getElementById("ElementID").innerHTML = e.element.id;
-    console.log(event, 'on', e.element.id);
-  });
-});
+                            if (e.element.type == "bpmn:Lane")
+                                console.log("lane");
+                            else if (e.element.type != "bpmn:Collaboration") {
+                                //$(".pop").fadeIn(300);
+
+
+                                var xmlDocument = $.parseXML(window.xml);
+                                var xml = $(xmlDocument);
+
+                                var tasks = xml.find("task");
+                                tasks.each(function (task_i) {
+                                    if (tasks[task_i].id == e.element.id) {
+
+                                        //console.log("doc", $(tasks[task_i]).find("documentation").text())
+                                        if ($(tasks[task_i]).find("documentation").text() == "") {
+                                            $(".pop").fadeIn(300);
+                                            renderForm();
+                                        }
+                                        else {
+
+                                            $(".pop").fadeIn(300);
+                                            renderForm($(tasks[task_i]).find("documentation").text());
+                                            console.log($(tasks[task_i]).find("documentation").text());
+
+                                            //$('#form-builder-pages').formRender({
+                                            //formData: formData,
+                                            //templates: templates
+                                            // });
+                                        }
+
+                                    }
+                                });
+                            }
+
+
+                        });
+                    });
+
 
                     // save diagram on button click
 
@@ -504,7 +604,6 @@ events.forEach(function(event) {
                     });
                 }
 
-
                 // a diagram to display
                 //
                 // see index-async.js on how to load the diagram asynchronously from a url.
@@ -518,6 +617,8 @@ events.forEach(function(event) {
             })(window.BpmnJS, window.jQuery);
         </script>
 
+
+        <!--
         <script>
             $(document).ready(function () {
                 $('[data-toggle=offcanvas]').click(function () {
@@ -525,10 +626,28 @@ events.forEach(function(event) {
                 });
             });
         </script>
-        <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-        <script src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js'></script>
+        -->
 
 
     {% endif %}
 
+    <script>
+        $(document).ready(function () {
+
+            $(".close-pop").click(function () {
+                $(".pop").fadeOut(300);
+            });
+
+            $(".close-lane").click(function () {
+                $(".lane").fadeOut(300);
+            });
+        });
+
+    </script>
+
+
+    <script src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js'></script>
+    <script src=" {% static 'js/popup.js' %} "></script>
+
 {% endblock %}
+
