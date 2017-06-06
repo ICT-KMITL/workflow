@@ -30,7 +30,7 @@ SECRET_KEY = 'js9)u%y@n!dnp6k!f*7m3ooz9cb)10*p5z&c6iiy#s9ef7m1#u'
 DEBUG = True
 
 
-ALLOWED_HOSTS = ['www.itimemachine.net']
+ALLOWED_HOSTS = ['*']
 #ALLOWED_HOSTS = ['0.0.0.0','localhost']
 
 
@@ -122,8 +122,8 @@ DATABASES = {
          'ENGINE': 'django.db.backends.postgresql_psycopg2',
          'NAME': 'postgres',
          'USER': 'postgres',
-         #'HOST': 'db',
-         'HOST': os.getenv("DB_1_PORT_5432_TCP_ADDR"),
+         'HOST': 'db',
+         #'HOST': os.getenv("DB_1_PORT_5432_TCP_ADDR"),
          'PORT': 5432,
      }
  }
