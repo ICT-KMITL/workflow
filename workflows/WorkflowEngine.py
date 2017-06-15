@@ -373,6 +373,9 @@ class WorkflowExecution:
         elif isinstance(self.nodes[nextObj],ParallelGateway):
             self.getParallelGatewayDecisions(nextObj)
 
+        elif isinstance(self.nodes[nextObj],ExclusiveGateway):
+            return (self.getExclusiveGatewayDecisions(nextObj))
+
     def getEventBasedGatewayDecisions(self,target):
         self.eventbased = 1
         event_list = []
@@ -401,12 +404,16 @@ class WorkflowExecution:
 
 
     def getExclusiveGatewayDecisions(self,target):
+        print("-------------------EXCLUSIVEEEE GATWWAYYYYYY--------------------")
         self.exclusive = 1
         option_list = {}
         for i in range(0, len(self.nodes[target].outgoing)):
             decision_name = self.flows[self.nodes[target].outgoing[i]].name
+            decision_name = decision_name.replace("\n", "").replace("\r", "")
             decision_flow = self.flows[self.nodes[target].outgoing[i]].id
+            print(decision_name)
             option_list[decision_name] = decision_flow
+        print(option_list)
         return option_list
 
     def getInclusiveGatewayDecisions(self):

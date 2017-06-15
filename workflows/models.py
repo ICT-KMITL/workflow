@@ -91,7 +91,7 @@ class ExecutingFlow(models.Model):
 
 class PendingTask(models.Model):
     taskId = models.AutoField(primary_key=True)
-    assignToUser = models.ForeignKey(User, related_name='assignUser')
+    assignToUser = models.ManyToManyField(User)
     form = models.TextField(max_length=400)
     listener = models.ForeignKey(User,related_name='listener',default = 1)
     belongToWFId = models.ForeignKey(ExecutingFlow,default = 1)

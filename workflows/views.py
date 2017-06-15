@@ -78,13 +78,21 @@ def do_task(request,task_id):
 
             flow_id = workflow_engine.run().id
             target_task = flows[flow_id].target
-            assignedUser = User.objects.get(username=nodes[target_task].lane.name)
+            assignedUser = nodes[target_task].lane.name
+            assignedUsers = assignedUser.split(",")
             task_name = nodes[target_task].name
 
             form = workflow_engine.form
-            pending_task = PendingTask(assignToUser = assignedUser,form =form,listener = assignedUser,
-                            belongToWFId = task.belongToWFId ,taskName = task_name,currentFlow = flow_id, state = 1)
+            pending_task = PendingTask(form=form, listener=User.objects.get(username=assignedUsers[0]),
+                                       belongToWFId=task.belongToWFId, taskName=task_name, currentFlow=flow_id, state=1)
             pending_task.save()
+
+            for i in range(0,len(assignedUsers)):
+
+                us = User.objects.get(username=assignedUsers[i])
+
+                pending_task.assignToUser.add(us)
+
 
             #newjson = {}
 
@@ -127,7 +135,7 @@ def do_task(request,task_id):
                                                     doc.text = json.dumps(json_form)
 
 
-            print("JSON_FORM",json_form)
+            #print("JSON_FORM",json_form)
             print(root)
             print(ET.tostring(root))
 
@@ -167,13 +175,19 @@ def do_task(request,task_id):
             flow_id = option_list[decision]
             print(flow_id)
             target_task = flows[flow_id].target
-            assignedUser = User.objects.get(username=nodes[target_task].lane.name)
+            assignedUser = nodes[target_task].lane.name
+            assignedUsers = assignedUser.split(",")
             task_name = nodes[target_task].name
 
-            pending_task = PendingTask(assignToUser=assignedUser, form="", listener=assignedUser,
+            form = workflow_engine.form
+            pending_task = PendingTask(form=form, listener=User.objects.get(username=assignedUsers[0]),
                                        belongToWFId=task.belongToWFId, taskName=task_name, currentFlow=flow_id, state=1)
             pending_task.save()
 
+            for i in range(0, len(assignedUsers)):
+                us = User.objects.get(username=assignedUsers[i])
+
+                pending_task.assignToUser.add(us)
 
             executing_flow = task.belongToWFId
             executing_flow.currentFlow = flow_id
@@ -195,7 +209,8 @@ def do_task(request,task_id):
 
                     next_flow = workflow_engine.joinOutgoing
                     target_task = flows[next_flow].target
-                    assignedUser = User.objects.get(username=nodes[target_task].lane.name)
+                    #assignedUser = User.objects.get(username=nodes[target_task].lane.name)
+                    '''
                     task_name = nodes[target_task].name
 
                     pending_task = PendingTask(assignToUser=assignedUser, form="", listener=assignedUser,
@@ -203,7 +218,21 @@ def do_task(request,task_id):
                                                state=1)
                     pending_task.save()
 
+                    '''
+                    assignedUser = nodes[target_task].lane.name
+                    assignedUsers = assignedUser.split(",")
+                    task_name = nodes[target_task].name
 
+                    form = workflow_engine.form
+                    pending_task = PendingTask(form=form, listener=User.objects.get(username=assignedUsers[0]),
+                                               belongToWFId=task.belongToWFId, taskName=task_name, currentFlow=next_flow,
+                                               state=1)
+                    pending_task.save()
+
+                    for i in range(0, len(assignedUsers)):
+                        us = User.objects.get(username=assignedUsers[i])
+
+                        pending_task.assignToUser.add(us)
 
                     executing_flow = task.belongToWFId
                     executing_flow.currentFlow = next_flow
@@ -218,11 +247,27 @@ def do_task(request,task_id):
                 flow_id_list = workflow_engine.run()
                 for i in range(0,len(flow_id_list)):
                     target_task = flows[flow_id_list[i]].target
+                    '''
                     assignedUser = User.objects.get(username=nodes[target_task].lane.name)
                     task_name = nodes[target_task].name
                     pending_task = PendingTask(assignToUser=assignedUser, form="", listener=assignedUser,
                                            belongToWFId=task.belongToWFId, taskName=task_name, currentFlow=flow_id_list[i], state=1)
                     pending_task.save()
+                    '''
+                    assignedUser = nodes[target_task].lane.name
+                    assignedUsers = assignedUser.split(",")
+                    task_name = nodes[target_task].name
+
+                    form = workflow_engine.form
+                    pending_task = PendingTask(form=form, listener=User.objects.get(username=assignedUsers[0]),
+                                               belongToWFId=task.belongToWFId, taskName=task_name, currentFlow=flow_id_list[i],
+                                               state=1)
+                    pending_task.save()
+
+                    for i in range(0, len(assignedUsers)):
+                        us = User.objects.get(username=assignedUsers[i])
+
+                        pending_task.assignToUser.add(us)
 
 
         elif workflow_engine.endEvent == 1:
@@ -260,12 +305,13 @@ def do_task(request,task_id):
             elems = parser.elems
 
             workflow_engine = WorkflowExecution(flows[task.currentFlow], nodes, flows)
-            workflow_engine.run()
+            runningFlow = workflow_engine.run()
             user = request.user
 
             if workflow_engine.exclusive == 1:
-                option_list = workflow_engine.run()
-                print(option_list)
+                option_list = runningFlow
+
+                print("OPTION_LIST:",option_list)
 
                 request.session['options_list'] = option_list
 
@@ -328,26 +374,38 @@ def publish(request):
         flows = parser.flows
         elems = parser.elems
 
+        startEventList = []
+        startFlows = []
         for node in nodes:
             if isinstance(nodes[node],StartEvent):
+                startEventList.append(nodes[node])
 
                 print("StartFlow " + nodes[node].outgoing)
-                startCurrentFlow = flows[nodes[node].outgoing]
-        target_task = nodes[startCurrentFlow.target]
-        flow_id = startCurrentFlow.id
-        executing_flow = ExecutingFlow(status = 1,templateId = workflow,executor = user,currentFlow = flow_id,xml = xml)
+                startFlows.append(flows[nodes[node].outgoing])
+
+        executing_flow = ExecutingFlow(status=1, templateId=workflow, executor=user, currentFlow="", xml=xml)
         executing_flow.save()
 
+        for i in range (0,len(startFlows)):
+            target_task = nodes[startFlows[i].target]
+            flow_id = startFlows[i].id
+            assignedUser = target_task.lane.name
+            assignedUsers = assignedUser.split(",")
+            task_name = target_task.name
 
-        assignedUser = User.objects.get(username=target_task.lane.name)
-        task_name = target_task.name
+            pending_task = PendingTask(form="", listener=User.objects.get(username=assignedUsers[0]),
+                                       belongToWFId=executing_flow, taskName=task_name, currentFlow=flow_id, state=1)
+            pending_task.save()
+
+            for i in range(0, len(assignedUsers)):
+                us = User.objects.get(username=assignedUsers[i])
+
+                pending_task.assignToUser.add(us)
 
 
 
-        tasks = PendingTask(assignToUser = assignedUser,form ="",listener = assignedUser,
-                            belongToWFId = executing_flow ,taskName = task_name,currentFlow = flow_id, state = 1)
 
-        tasks.save()
+
 
 
     assignedTasks = PendingTask.objects.filter(assignToUser=user)
