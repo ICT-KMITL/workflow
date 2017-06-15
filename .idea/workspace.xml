@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3956c8dc-7fef-4967-92e0-f99906d4a6da" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/composeexample/settings.py" afterPath="$PROJECT_DIR$/composeexample/settings.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/workflows/WorkflowEngine.py" afterPath="$PROJECT_DIR$/workflows/WorkflowEngine.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/workflows/models.py" afterPath="$PROJECT_DIR$/workflows/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/workflows/templates/workflows/index.html" afterPath="$PROJECT_DIR$/workflows/templates/workflows/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/workflows/views.py" afterPath="$PROJECT_DIR$/workflows/views.py" />
     </list>
     <ignored path="workflow.iws" />
     <ignored path=".idea/workspace.xml" />
