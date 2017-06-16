@@ -30,8 +30,8 @@ SECRET_KEY = 'js9)u%y@n!dnp6k!f*7m3ooz9cb)10*p5z&c6iiy#s9ef7m1#u'
 DEBUG = True
 
 
-#ALLOWED_HOSTS = ['*']
-ALLOWED_HOSTS = ['0.0.0.0','localhost']
+ALLOWED_HOSTS = ['*']
+#ALLOWED_HOSTS = ['0.0.0.0','localhost']
 
 
 
