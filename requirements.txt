@@ -6,6 +6,6 @@ rest-social-auth
 
 python-social-auth
 
-channels
+channels==1.1.2
 
 asgi_redis
